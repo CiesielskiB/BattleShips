@@ -128,3 +128,5 @@ C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\obj\Deb
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\obj\Debug\Battleships.Web.csproj.CopyComplete
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\obj\Debug\Battleships.Web.dll
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\obj\Debug\Battleships.Web.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Battleships.Core.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Battleships.Core.pdb

@@ -22,3 +22,28 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.board{
+    margin: 10px auto;
+    background-color:cornflowerblue;
+
+}
+
+
+
+.tile {
+    width: 29px;
+    height: 29px;
+    border: 1px solid #8DEEEE;
+    text-align:center
+}
+
+.tilerow {
+}
+
+.BoardsContainter{
+    margin-top:30px;
+    margin-bottom:30px;
+    background-color:aliceblue;
+    border: 1px solid cornflowerblue;
+}

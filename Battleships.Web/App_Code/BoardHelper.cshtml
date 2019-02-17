@@ -1,0 +1,39 @@
+﻿@helper CreateBoard(int playerNumber,bool bot,int boardSize)
+{
+    char a = 'A';
+<table class="board" bot="@bot">
+    @for (int i = 0; i < boardSize + 1; i++)
+    {
+        <tr class="tilerow" style="">
+            @for (int j = 0; j < boardSize + 1; j++)
+            {
+                if (i == 0)
+                {
+                    if (j == 0)
+                    {
+                        <th class="tile"></th>
+                    }
+                    else
+                    {
+                        <th class="tile">@a</th>
+                        a++;
+                    }
+                }
+                else
+                {
+                    if (j == 0)
+                    {
+                        <th class="tile">@i</th>
+                    }
+                    else
+                    {
+                        <th class="tile" x="@j" y="@i" ship="none"></th>
+
+                    }
+                }
+
+            }
+        </tr>
+    }
+</table>
+}

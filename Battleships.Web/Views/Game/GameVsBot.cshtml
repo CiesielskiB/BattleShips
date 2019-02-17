@@ -1,7 +1,26 @@
-﻿
+﻿@model Battleships.Core.Models.GameOptions
 @{
     ViewBag.Title = "GameVsBot";
+    char a = 'A';
 }
 
-<h2>GameVsBot</h2>
+<div class="BoardsContainter center-block  col-md-12 row">
+    <div class="col-md-6">
+        @BoardHelper.CreateBoard(0, false, Model.PlayersOptions.BoardSize)
+    </div>
+    <div class="col-md-6 center-block">
+        @BoardHelper.CreateBoard(0,Model.Bot,Model.PlayersOptions.BoardSize)
+    </div>
+</div>
+<div class="UIContainer col-md-12 row center-block">
+    <div class="col-md-4 center-block">
+        <button class="btn btn-default">Start game</button>
+    </div>
+    <div class="col-md-4 center-block">
+        <button class="btn btn-default">Start game</button>
+    </div>
+    <div class="col-md-4 center-block">
+        <button class="btn btn-default">Start game</button>
+    </div>
 
+</div>

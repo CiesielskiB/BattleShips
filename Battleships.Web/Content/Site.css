@@ -23,10 +23,9 @@ textarea {
     max-width: 280px;
 }
 
-.board{
+.board {
     margin: 10px auto;
-    background-color:cornflowerblue;
-
+    background-color: cornflowerblue;
 }
 
 
@@ -38,12 +37,44 @@ textarea {
     text-align:center
 }
 
+.choose-tile {
+    width: 29px;
+    height: 29px;
+    border: 1px solid #8DEEEE;
+    background-color: forestgreen;
+    text-align: center
+}
+
+
 .tilerow {
 }
 
 .BoardsContainter{
     margin-top:30px;
-    margin-bottom:30px;
     background-color:aliceblue;
     border: 1px solid cornflowerblue;
 }
+
+.ship-placing {
+    display:inline;
+    height:30px;
+    margin: 5px;
+}
+.square{
+    height:29px;
+    width:29px;
+    border: 1px solid black;
+    background-color:forestgreen;
+}
+
+.ship-placing-container{
+    margin-bottom:5px;
+    border: 1px solid black;
+    padding:1%;
+}
+
+.UIContainer{
+    border: 1px solid black;
+    padding: 2%;
+}
+

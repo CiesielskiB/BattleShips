@@ -1,6 +1,14 @@
 ﻿@helper CreateBoard(int playerNumber,bool bot,int boardSize)
 {
-    char a = 'A';
+char a = 'A';
+if (!bot)
+{
+        <p>Your board</p>
+}
+else
+{
+        <p>Bots board</p>
+}
 <table class="board" bot="@bot">
     @for (int i = 0; i < boardSize + 1; i++)
     {
@@ -37,3 +45,20 @@
     }
 </table>
 }
+
+@helper ShipPlacingMenu(int[] shipTypes) {
+    <p id="ship-placing-label">Place ships</p>
+        for (int i = 0; i < 5; i++)
+        {
+            <span type="Label-ship.@i">@shipTypes[i]x</span>
+            <table class="ship-placing">
+                <tr>
+                    @for (int j = 0; j < i + 1; j++)
+                    {
+                        <th class="choose-tile" type="ship.@i"></th>
+                    }
+                </tr>
+            </table>
+        }
+    <Button class="btn btn-success">Confirm Placement</Button>
+    }

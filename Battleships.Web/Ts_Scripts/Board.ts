@@ -24,7 +24,8 @@ class Board {
     }
 
     //TODO css class handling
-    public placeShip(ship: Ship, x: number, y: number, horizontal: boolean):boolean {
+    public placeShip(ship: Ship, x: number, y: number, horizontal: boolean): boolean {
+        console.log(x);
         if (this.canPlaceShip(ship, x, y, horizontal)) {
             var shipLenght: number = ship.getShipType();
             if (horizontal) {
@@ -33,6 +34,9 @@ class Board {
                     this.tiles[i][y].setShip(ship);
                     if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
+                        console.log("th[data-x =" + i + "][data-y = " + y + "]")
+                        $("th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
+                        
                     }
                 }
             } else {
@@ -53,7 +57,21 @@ class Board {
 
     //TODO this function
     private canPlaceShip(ship: Ship, x: number, y: number, horizontal: boolean): boolean {
-
+        //checkinf if ship can be placed
+        if (horizontal) {
+            for (var i: number = x; i < x + ship.getShipType(); i++) {
+                if (!this.isValidTile(i, y)) return false;
+                if (this.tiles[i][y].getShip() != null) return false;
+                if (!this.areNeighborsFree(i, y)) return false;
+            }
+        } else {
+            for (var i: number = y; i < y + ship.getShipType(); i++) {
+                if (!this.isValidTile(x, i)) return false;
+                if (this.tiles[i][y].getShip() != null) return false;
+                if (!this.areNeighborsFree(x, i)) return false;
+            }
+        }
+        return true;
     }
 
     private isValidTile(x: number, y: number): boolean {

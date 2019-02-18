@@ -78,3 +78,7 @@ textarea {
     padding: 2%;
 }
 
+.ship-placed{
+    background-color:red;
+}
+

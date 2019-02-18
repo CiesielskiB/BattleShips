@@ -303,8 +303,8 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Ts_Scripts\TestClass.ts" />
-    <TypeScriptCompile Include="Ts_Scripts\Testing.ts" />
+    <TypeScriptCompile Include="Ts_Scripts\Board.ts" />
+    <TypeScriptCompile Include="Ts_Scripts\main.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

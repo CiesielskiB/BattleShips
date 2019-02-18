@@ -15,6 +15,7 @@ var Board = /** @class */ (function () {
     }
     //TODO css class handling
     Board.prototype.placeShip = function (ship, x, y, horizontal) {
+        console.log(x);
         if (this.canPlaceShip(ship, x, y, horizontal)) {
             var shipLenght = ship.getShipType();
             if (horizontal) {
@@ -23,6 +24,8 @@ var Board = /** @class */ (function () {
                     this.tiles[i][y].setShip(ship);
                     if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
+                        console.log("th[data-x =" + i + "][data-y = " + y + "]");
+                        $("th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
                     }
                 }
             }
@@ -41,19 +44,59 @@ var Board = /** @class */ (function () {
         }
         return false;
     };
+    //TODO this function
     Board.prototype.canPlaceShip = function (ship, x, y, horizontal) {
+        //checkinf if ship can be placed
+        if (horizontal) {
+            for (var i = x; i < x + ship.getShipType(); i++) {
+                if (!this.isValidTile(i, y))
+                    return false;
+                if (this.tiles[i][y].getShip() != null)
+                    return false;
+                if (!this.areNeighborsFree(i, y))
+                    return false;
+            }
+        }
+        else {
+            for (var i = y; i < y + ship.getShipType(); i++) {
+                if (!this.isValidTile(x, i))
+                    return false;
+                if (this.tiles[i][y].getShip() != null)
+                    return false;
+                if (!this.areNeighborsFree(x, i))
+                    return false;
+            }
+        }
+        return true;
     };
     Board.prototype.isValidTile = function (x, y) {
         return x >= 1 && x <= this.boardSize && y >= 1 && y <= this.boardSize;
     };
     Board.prototype.areNeighborsFree = function (x, y) {
+        if (this.isValidTile(x + 1, y)) {
+            if (this.getTile(x + 1, y).getShip() != null)
+                return false;
+        }
+        if (this.isValidTile(x - 1, y)) {
+            if (this.getTile(x - 1, y).getShip() != null)
+                return false;
+        }
+        if (this.isValidTile(x, y + 1)) {
+            if (this.getTile(x, y + 1).getShip() != null)
+                return false;
+        }
+        if (this.isValidTile(x, y - 1)) {
+            if (this.getTile(x, y - 1).getShip() != null)
+                return false;
+        }
+        return true;
     };
     Board.prototype.getShipCount = function (shipType) {
         return this.shipTypes[shipType - 1];
     };
     Board.prototype.getTile = function (x, y) {
         if (this.isValidTile(x, y)) {
-            return tiles[x][y];
+            return this.tiles[x][y];
         }
         else {
             return null;
@@ -90,7 +133,7 @@ var Tile = /** @class */ (function () {
         return this.ship;
     };
     Tile.prototype.setShip = function (ship) {
-        this.ship = Ship;
+        this.ship = ship;
     };
     return Tile;
 }());
@@ -114,4 +157,14 @@ var Ship = /** @class */ (function () {
     };
     return Ship;
 }());
+/// <reference path="./Board.ts" />
+$(document).ready(function () {
+    board = new Board(10, [1, 1, 1, 1, 1], false, "Player");
+});
+$(".tile").click(function (event) {
+    var element = event.target;
+    var x = parseInt($(element).attr("data-x"));
+    var y = parseInt($(element).attr("data-y"));
+    board.placeShip(new Ship(3, true), x, y, true);
+});
 //# sourceMappingURL=MainGame.js.map

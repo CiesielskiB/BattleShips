@@ -1,0 +1,12 @@
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\Battleships.DataAccess.SQL.dll.config
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\Battleships.DataAccess.SQL.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\Battleships.DataAccess.SQL.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\EntityFramework.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\EntityFramework.xml
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.csprojAssemblyReference.cache
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.csproj.CoreCompileInputs.cache
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.csproj.CopyComplete
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.pdb

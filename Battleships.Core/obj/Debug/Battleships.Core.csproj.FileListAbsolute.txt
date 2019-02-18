@@ -1,6 +1,5 @@
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\bin\Debug\Battleships.Core.dll
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\bin\Debug\Battleships.Core.pdb
-C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\obj\Debug\Battleships.Core.csprojAssemblyReference.cache
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\obj\Debug\Battleships.Core.csproj.CoreCompileInputs.cache
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\obj\Debug\Battleships.Core.dll
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\obj\Debug\Battleships.Core.pdb

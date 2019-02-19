@@ -9,7 +9,7 @@ else
 {
         <p>Bots board</p>
 }
-<table class="board" data-bot="@bot" data-board-size="@boardSize">
+<table class="board" data-bot="@bot" data-player-number="@playerNumber" data-board-size="@boardSize">
     @for (int i = 0; i < boardSize + 1; i++)
     {
         <tr class="tilerow" style="">
@@ -60,5 +60,5 @@ else
                 </tr>
             </table>
         }
-    <Button class="btn btn-success">Confirm Placement</Button>
+    
     }

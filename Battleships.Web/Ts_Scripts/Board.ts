@@ -7,13 +7,15 @@ class Board {
 
     public playerName: string;
     public shipPlaced: number;
+    public playerID: number;
 
-    constructor(boardSize: number, shipTypes: number[], AIboard: boolean, playerName: string) {
+    constructor(boardSize: number, shipTypes: number[], AIboard: boolean, playerName: string, playerID:number) {
         this.boardSize = boardSize;
         this.shipTypes = shipTypes;
         this.shipPlaced = 0;
         this.AIboard = AIboard;
         this.playerName = playerName;
+        this.playerID = playerID;
         this.tiles = [];
         for (var i: number = 1; i < boardSize+1; i++) {
             this.tiles[i] = [];
@@ -65,7 +67,7 @@ class Board {
         } else {
             for (var i: number = y; i < y + ship.getShipType(); i++) {
                 if (!this.isValidTile(x, i)) return false;
-                if (this.tiles[i][y].getShip() != null) return false;
+                if (this.tiles[x][i].getShip() != null) return false;
                 if (!this.areNeighborsFree(x, i)) return false;
             }
         }

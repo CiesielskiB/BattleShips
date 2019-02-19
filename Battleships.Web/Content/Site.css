@@ -45,6 +45,22 @@ textarea {
     text-align: center
 }
 
+.choosen-tile {
+    width: 29px;
+    height: 29px;
+    border: 1px solid red;
+    background-color: lawngreen;
+    text-align: center
+}
+
+.disabled-choose-tile {
+    width: 29px;
+    height: 29px;
+    border: 1px solid black;
+    background-color: dimgrey;
+    text-align: center
+}
+
 
 .tilerow {
 }

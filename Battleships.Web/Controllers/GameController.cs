@@ -29,7 +29,7 @@ namespace Battleships.Web.Controllers
 			gameOptions.PlayersOptions = new OptionsModel
 			{
 				BoardSize = 10,
-				ShipTypes = new int[] { 1, 1, 1, 1, 1 }
+				ShipTypes = new int[] { 1, 4, 1, 2, 1 }
 			};
 
 

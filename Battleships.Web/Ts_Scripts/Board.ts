@@ -23,9 +23,8 @@ class Board {
         }
     }
 
-    //TODO css class handling
+    //TODO css class handling, basics are done, make it nicer
     public placeShip(ship: Ship, x: number, y: number, horizontal: boolean): boolean {
-        console.log(x);
         if (this.canPlaceShip(ship, x, y, horizontal)) {
             var shipLenght: number = ship.getShipType();
             if (horizontal) {
@@ -34,8 +33,7 @@ class Board {
                     this.tiles[i][y].setShip(ship);
                     if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
-                        console.log("th[data-x =" + i + "][data-y = " + y + "]")
-                        $("th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
+                        $("table[data-bot = 'False'] > tbody > tr >th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
                         
                     }
                 }
@@ -45,6 +43,7 @@ class Board {
                     this.tiles[x][i].setShip(ship);
                     if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
+                        $("table[data-bot = 'False'] > tbody > tr >  th[data-x =" + x + "][data-y = " + i + "]").addClass("ship-placed");
                     }
                 }
             }
@@ -55,7 +54,6 @@ class Board {
         return false;
     }
 
-    //TODO this function
     private canPlaceShip(ship: Ship, x: number, y: number, horizontal: boolean): boolean {
         //checkinf if ship can be placed
         if (horizontal) {

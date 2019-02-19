@@ -13,9 +13,8 @@ var Board = /** @class */ (function () {
             }
         }
     }
-    //TODO css class handling
+    //TODO css class handling, basics are done, make it nicer
     Board.prototype.placeShip = function (ship, x, y, horizontal) {
-        console.log(x);
         if (this.canPlaceShip(ship, x, y, horizontal)) {
             var shipLenght = ship.getShipType();
             if (horizontal) {
@@ -24,8 +23,7 @@ var Board = /** @class */ (function () {
                     this.tiles[i][y].setShip(ship);
                     if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
-                        console.log("th[data-x =" + i + "][data-y = " + y + "]");
-                        $("th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
+                        $("table[data-bot = 'False'] > tbody > tr >th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
                     }
                 }
             }
@@ -35,6 +33,7 @@ var Board = /** @class */ (function () {
                     this.tiles[x][i].setShip(ship);
                     if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
+                        $("table[data-bot = 'False'] > tbody > tr >  th[data-x =" + x + "][data-y = " + i + "]").addClass("ship-placed");
                     }
                 }
             }
@@ -44,7 +43,6 @@ var Board = /** @class */ (function () {
         }
         return false;
     };
-    //TODO this function
     Board.prototype.canPlaceShip = function (ship, x, y, horizontal) {
         //checkinf if ship can be placed
         if (horizontal) {
@@ -158,13 +156,35 @@ var Ship = /** @class */ (function () {
     return Ship;
 }());
 /// <reference path="./Board.ts" />
+//player1 player2;
 $(document).ready(function () {
-    board = new Board(10, [1, 1, 1, 1, 1], false, "Player");
+    var element = $("table[data-bot = 'False']");
+    var boardSize = parseInt($(element).attr("data-board-size"));
+    shipTypes = [];
+    for (var i = 0; i < 5; i++) {
+        shipTypes[i] = parseInt($($("span[data-type = 'Label-ship." + i + "']")).attr("data-amount"));
+        console.log(shipTypes[i]);
+    }
+    hasGameStarted = false;
+    shipPlacing = 1;
+    typeOfShipSelected = -1;
+    isTurnDone = false;
+    player1Board = new Board(boardSize, shipTypes, false, "Player");
 });
 $(".tile").click(function (event) {
-    var element = event.target;
-    var x = parseInt($(element).attr("data-x"));
-    var y = parseInt($(element).attr("data-y"));
-    board.placeShip(new Ship(3, true), x, y, true);
+    var waterTile = event.target;
+    if ($(this).parent().parent().parent().attr("data-bot") == "False" && typeOfShipSelected > 0) { //checking if the event is triggered by the correct board (players board)
+        var x = parseInt($(waterTile).attr("data-x"));
+        var y = parseInt($(waterTile).attr("data-y"));
+        player1Board.placeShip(new Ship(typeOfShipSelected, true), x, y, true);
+        typeOfShipSelected = -1;
+    }
+});
+//work in progress
+$(".choose-tile").click(function (event) {
+    var choosenShip = event.target;
+    if ($(choosenShip).attr("data-disabled") == "False") {
+        typeOfShipSelected = parseInt($(choosenShip).attr("data-type")) + 1;
+    }
 });
 //# sourceMappingURL=MainGame.js.map

@@ -11,7 +11,11 @@ class Board {
 
     constructor(boardSize: number, shipTypes: number[], AIboard: boolean, playerName: string, playerID:number) {
         this.boardSize = boardSize;
-        this.shipTypes = shipTypes;
+        this.shipTypes = [];
+        for (let i = 0; i < 5; i++) {
+            this.shipTypes[i] = shipTypes[i];
+        }
+        
         this.shipPlaced = 0;
         this.AIboard = AIboard;
         this.playerName = playerName;
@@ -27,26 +31,25 @@ class Board {
 
     //TODO css class handling, basics are done, make it nicer
     public placeShip(ship: Ship, x: number, y: number, horizontal: boolean): boolean {
-        if (this.canPlaceShip(ship, x, y, horizontal)) {
+        if (this.isValidTile(x,y) && this.canPlaceShip(ship, x, y, horizontal)) {
             var shipLenght: number = ship.getShipType();
             if (horizontal) {
                 //place ships to the right of the mouse
                 for (var i: number = x; i < x + shipLenght; i++) {
                     this.tiles[i][y].setShip(ship);
-                    if (!this.AIboard) {
+                  //  if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
-                        $("table[data-bot = 'False'] > tbody > tr >th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
-                        
-                    }
+                        $("table[ data-player-number = '"+ this.playerID + "'] > tbody > tr >th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
+                  //  }
                 }
             } else {
                 //place ships downwards from the mosue
                 for (var i: number = y; i < y + shipLenght; i++) {
                     this.tiles[x][i].setShip(ship);
-                    if (!this.AIboard) {
+                   // if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
-                        $("table[data-bot = 'False'] > tbody > tr >  th[data-x =" + x + "][data-y = " + i + "]").addClass("ship-placed");
-                    }
+                         $("table[ data-player-number = '"+ this.playerID + "'] > tbody > tr >  th[data-x =" + x + "][data-y = " + i + "]").addClass("ship-placed");
+                   // }
                 }
             }
             this.shipTypes[shipLenght - 1]--; // decreasing the number of certain ship placed
@@ -92,6 +95,51 @@ class Board {
             if (this.getTile(x, y - 1).getShip() != null) return false;
         }
         return true;
+    }
+
+    public unplaceShip(x: number, y: number): number {
+
+        let startingTile: Tile = this.tiles[x][y];
+        let lenght: number = startingTile.getShip().getShipType();
+        let horizontal: boolean = startingTile.getShip().isHorizontal();
+        let startingX = x;
+        let startingY = y;
+        if (horizontal) {
+            let currentTile: Tile = startingTile;
+            while (currentTile.getShip() != null) {
+                $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                currentTile.setShip(null);
+                if (this.isValidTile(++x, y)) currentTile = this.tiles[x][y];
+            }
+            x = startingX;
+            if (this.isValidTile(--x, y)) {
+                currentTile = this.tiles[x][y];
+                while (currentTile.getShip() != null) {
+                    $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                    currentTile.setShip(null);
+                    if (this.isValidTile(--x, y)) currentTile = this.tiles[x][y];
+                }
+            }
+        }else {
+            let currentTile: Tile = startingTile;
+            while (currentTile.getShip() != null) {
+                $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                currentTile.setShip(null);
+                if (this.isValidTile(x, ++y)) currentTile = this.tiles[x][y];
+            }
+            y = startingY;
+            if (this.isValidTile(x, --y)) {
+                currentTile = this.tiles[x][y];
+                while (currentTile.getShip() != null) {
+                    $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                    currentTile.setShip(null);
+                    if (this.isValidTile(x, --y)) currentTile = this.tiles[x][y];
+                }
+            }
+        }
+        this.shipPlaced--; // decreasing number of placed ship
+        this.shipTypes[lenght - 1]++; // increasing number of possible ships of this type
+        return lenght;
     }
 
     public getShipCount(shipType: number): number {

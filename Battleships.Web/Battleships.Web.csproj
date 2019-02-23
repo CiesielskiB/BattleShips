@@ -42,8 +42,8 @@
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptOutFile>C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\Scripts\Scripts_JS\MainGame.js</TypeScriptOutFile>
-    <TypeScriptOutDir>C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\Scripts\Scripts_JS</TypeScriptOutDir>
+    <TypeScriptOutFile>.\Scripts\Scripts_JS\MainGame.js</TypeScriptOutFile>
+    <TypeScriptOutDir>.\Scripts\Scripts_JS</TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>

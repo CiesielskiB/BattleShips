@@ -98,3 +98,11 @@ textarea {
     background-color:red;
 }
 
+.ship-hit{
+    background-color:hotpink;
+}
+
+.water-hit{
+    background-color:darkslategrey;
+}
+

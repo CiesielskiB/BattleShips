@@ -24,7 +24,7 @@ class Board {
         for (var i: number = 1; i < boardSize+1; i++) {
             this.tiles[i] = [];
             for (var j: number = 1; j < boardSize+1; j++) {
-                this.tiles[i][j] = new Tile(j, i, this);
+                this.tiles[i][j] = new Tile(i, j, this);
             }
         }
     }
@@ -37,19 +37,19 @@ class Board {
                 //place ships to the right of the mouse
                 for (var i: number = x; i < x + shipLenght; i++) {
                     this.tiles[i][y].setShip(ship);
-                  //  if (!this.AIboard) {
+                    if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
                         $("table[ data-player-number = '"+ this.playerID + "'] > tbody > tr >th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
-                  //  }
+                    }
                 }
             } else {
                 //place ships downwards from the mosue
                 for (var i: number = y; i < y + shipLenght; i++) {
                     this.tiles[x][i].setShip(ship);
-                   // if (!this.AIboard) {
+                    if (!this.AIboard) {
                         //change classes to change looks with Jquery :)
                          $("table[ data-player-number = '"+ this.playerID + "'] > tbody > tr >  th[data-x =" + x + "][data-y = " + i + "]").addClass("ship-placed");
-                   // }
+                    }
                 }
             }
             this.shipTypes[shipLenght - 1]--; // decreasing the number of certain ship placed
@@ -107,7 +107,7 @@ class Board {
         if (horizontal) {
             let currentTile: Tile = startingTile;
             while (currentTile.getShip() != null) {
-                $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
                 currentTile.setShip(null);
                 if (this.isValidTile(++x, y)) currentTile = this.tiles[x][y];
             }
@@ -115,7 +115,7 @@ class Board {
             if (this.isValidTile(--x, y)) {
                 currentTile = this.tiles[x][y];
                 while (currentTile.getShip() != null) {
-                    $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
                     currentTile.setShip(null);
                     if (this.isValidTile(--x, y)) currentTile = this.tiles[x][y];
                 }
@@ -123,7 +123,7 @@ class Board {
         }else {
             let currentTile: Tile = startingTile;
             while (currentTile.getShip() != null) {
-                $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
                 currentTile.setShip(null);
                 if (this.isValidTile(x, ++y)) currentTile = this.tiles[x][y];
             }
@@ -131,7 +131,7 @@ class Board {
             if (this.isValidTile(x, --y)) {
                 currentTile = this.tiles[x][y];
                 while (currentTile.getShip() != null) {
-                    $("table[ data-player-number = '0'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
+                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
                     currentTile.setShip(null);
                     if (this.isValidTile(x, --y)) currentTile = this.tiles[x][y];
                 }
@@ -176,10 +176,12 @@ class Tile {
         this.wasShot = true;
         if (this.ship != null) {
             //change classes to fill tile
+            $("table[ data-player-number = '" + this.board.playerID + "'] > tbody > tr >th[data-x =" + this.x + "][data-y = " + this.y + "]").removeClass("ship-placed").addClass("ship-hit");
             this.ship.hit();
             return true;
         } else {
             //change classes to fill tile
+            $("table[ data-player-number = '" + this.board.playerID + "'] > tbody > tr >th[data-x =" + this.x + "][data-y = " + this.y + "]").addClass("water-hit");
             return false;
         }
     }

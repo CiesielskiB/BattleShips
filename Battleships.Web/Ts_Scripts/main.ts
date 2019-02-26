@@ -49,6 +49,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     typeOfShipSelected = -1;
                     if (shipsToPlace <= 0) {
                         shipPlacing--;
+                        $("#startGame").removeAttr("Disabled");
                     }
                 }
                 // deplacing ships
@@ -59,6 +60,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     let menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
                     if (shipsToPlace <= 0) {
                         shipPlacing++;
+                        $("#startGame").attr("disabled", "disabled");
                     }
                     shipsToPlace++;
                     if ($(menuTile).hasClass("disabled-choose-tile")) {
@@ -72,19 +74,16 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
         }
     //shooting phase
     } else {
-        
         if (parseInt(clickedBoard.attr("data-player-number")) == 1 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) {
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
             let tile: Tile = player2Board.getTile(x, y);
-            console.log("trying to shoot");
             if (!tile.wasShot && !isTurnDone) {
                 //ship wasnt hit
                 if (!tile.shoot()) {
                     isTurnDone = true;
                     shotAI();
                 } else { //ship was hit
-                    console.log("we shooting");
                     if (!tile.getShip().isAlive()) {
                         player2Board.shipPlaced--;
                         if (player2Board.shipPlaced <= 0) {
@@ -98,6 +97,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
     }
     
 });
+
 
 function updateMenu(): void {
     if (player1Board.getShipCount(typeOfShipSelected) > 0) {
@@ -124,6 +124,7 @@ $("#startGame").click(function (event) {
     if (shipPlacing <= 0) {
         placeAIShips();
         hasGameStarted = true;
+        $(this).attr("disabled", "disabled");
     }
     
 

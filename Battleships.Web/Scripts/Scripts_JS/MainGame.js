@@ -246,6 +246,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     typeOfShipSelected = -1;
                     if (shipsToPlace <= 0) {
                         shipPlacing--;
+                        $("#startGame").removeAttr("Disabled");
                     }
                 }
                 // deplacing ships
@@ -257,6 +258,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     var menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
                     if (shipsToPlace <= 0) {
                         shipPlacing++;
+                        $("#startGame").attr("disabled", "disabled");
                     }
                     shipsToPlace++;
                     if ($(menuTile).hasClass("disabled-choose-tile")) {
@@ -275,7 +277,6 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
             var tile = player2Board.getTile(x, y);
-            console.log("trying to shoot");
             if (!tile.wasShot && !isTurnDone) {
                 //ship wasnt hit
                 if (!tile.shoot()) {
@@ -283,7 +284,6 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     shotAI();
                 }
                 else { //ship was hit
-                    console.log("we shooting");
                     if (!tile.getShip().isAlive()) {
                         player2Board.shipPlaced--;
                         if (player2Board.shipPlaced <= 0) {
@@ -319,6 +319,7 @@ $("#startGame").click(function (event) {
     if (shipPlacing <= 0) {
         placeAIShips();
         hasGameStarted = true;
+        $(this).attr("disabled", "disabled");
     }
 });
 function placeAIShips() {

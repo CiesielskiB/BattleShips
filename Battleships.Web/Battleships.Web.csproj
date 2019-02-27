@@ -304,6 +304,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Ts_Scripts\Board.ts" />
+    <TypeScriptCompile Include="Ts_Scripts\BotMoves.ts" />
     <TypeScriptCompile Include="Ts_Scripts\main.ts" />
   </ItemGroup>
   <PropertyGroup>

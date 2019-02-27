@@ -209,6 +209,118 @@ var Ship = /** @class */ (function () {
     };
     return Ship;
 }());
+var BotMoves = /** @class */ (function () {
+    function BotMoves(boardSize) {
+        this.boardSize = boardSize;
+        this.shipOrientation = -1;
+        this.currentX = -1;
+        this.currentY = -1;
+        this.isShipHit = false;
+        this.firstHitX = -1;
+        this.firstHitY = -1;
+        this.nextMoveX = -1;
+        this.nextMoveY = -1;
+        this.board = [];
+        for (var i = 1; i < this.boardSize + 1; i++) {
+            this.board[i] = [];
+            for (var j = 1; j < this.boardSize + 1; j++) {
+                this.board[i][j] = -1;
+            }
+        }
+    }
+    BotMoves.prototype.getX = function () {
+        return this.nextMoveX;
+    };
+    BotMoves.prototype.getY = function () {
+        return this.nextMoveY;
+    };
+    BotMoves.prototype.markAsMissed = function (x, y) {
+        this.board[x][y] = 0;
+        if (this.isShipHit) {
+            this.currentX = x;
+            this.currentY = y;
+        }
+    };
+    BotMoves.prototype.markAsHit = function (x, y) {
+        this.board[x][y] = 1;
+        this.isShipHit = true;
+        if (this.firstHitX < 0 || this.firstHitY < 0) {
+            this.firstHitX = x;
+            this.firstHitY = y;
+            this.currentX = x;
+            this.currentY = y;
+        }
+        else {
+            if (this.shipOrientation < 0) {
+                if (this.currentX - x != 0)
+                    this.shipOrientation = 0;
+                if (this.currentY - y != 0)
+                    this.shipOrientation = 1;
+            }
+        }
+    };
+    BotMoves.prototype.shipDestroyed = function () {
+        this.firstHitX = -1;
+        this.firstHitY = -1;
+        this.currentX = -1;
+        this.currentY = -1;
+        this.shipOrientation = -1;
+        this.isShipHit = false;
+    };
+    BotMoves.prototype.calculateNextMove = function () {
+        var validMove = false;
+        var x;
+        var y;
+        if (!this.isShipHit) {
+            while (!validMove) {
+                x = Math.floor(Math.random() * (this.boardSize - 1 + 1)) + 1;
+                y = Math.floor(Math.random() * (this.boardSize - 1 + 1)) + 1;
+                if (!this.wasAlreadyShot(x, y) && !this.isShipAdjacent(x, y)) {
+                    validMove = true;
+                }
+            }
+        }
+        else {
+            if (this.shipOrientation < 0) {
+                var randomDirection = Math.random() < 0.5;
+                if (randomDirection) {
+                    // random shot in a while
+                }
+                else {
+                    //
+                }
+            }
+        }
+        this.nextMoveX = x;
+        this.nextMoveY = y;
+    };
+    BotMoves.prototype.isShipAdjacent = function (x, y) {
+        if (this.isValidTile(x + 1, y)) {
+            if (this.board[x + 1][y] == 1)
+                return true;
+        }
+        if (this.isValidTile(x - 1, y)) {
+            if (this.board[x - 1][y] == 1)
+                return true;
+        }
+        if (this.isValidTile(x, y + 1)) {
+            if (this.board[x][y + 1] == 1)
+                return true;
+        }
+        if (this.isValidTile(x, y - 1)) {
+            if (this.board[x][y - 1] == 1)
+                return true;
+        }
+        return false;
+    };
+    BotMoves.prototype.isValidTile = function (x, y) {
+        return x >= 1 && x <= this.boardSize && y >= 1 && y <= this.boardSize;
+    };
+    BotMoves.prototype.wasAlreadyShot = function (x, y) {
+        return this.board[x][y] != -1;
+    };
+    return BotMoves;
+}());
 /// <reference path="./Board.ts" />
 //player1 player2;
 $(document).ready(function () {
@@ -218,7 +330,6 @@ $(document).ready(function () {
     shipsToPlace = 0;
     for (var i = 0; i < 5; i++) {
         shipTypes[i] = parseInt($($("span[data-type = 'Label-ship." + i + "']")).attr("data-amount"));
-        console.log(shipTypes[i]);
         shipsToPlace += shipTypes[i];
     }
     horizontal = true;
@@ -226,14 +337,16 @@ $(document).ready(function () {
     shipPlacing = 1;
     typeOfShipSelected = -1;
     isTurnDone = false;
+    winnerIs = -1;
     player1Board = new Board(boardSize, shipTypes, false, "Player", 0);
     player2Board = new Board(boardSize, shipTypes, true, "Player2", 1);
+    ShipAI = new BotMoves(boardSize);
 });
 $(".BoardsContainter").on('click', ".tile", function (event) {
     var waterTile = event.target;
     var clickedBoard = $(this).parent().parent().parent();
     //ship placing phase
-    if (!hasGameStarted) {
+    if (!hasGameStarted && winnerIs <= -1) {
         // checking if tile is valid
         if (parseInt(clickedBoard.attr("data-player-number")) == 0 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) { //checking if the event is triggered by the correct board (players board)
             var x = parseInt($(waterTile).attr("data-x"));
@@ -253,7 +366,6 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
             }
             else {
                 if (player1Board.getTile(x, y).getShip() != null) {
-                    console.log("unship tile");
                     var deletedShip = player1Board.unplaceShip(x, y);
                     var menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
                     if (shipsToPlace <= 0) {
@@ -262,7 +374,6 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     }
                     shipsToPlace++;
                     if ($(menuTile).hasClass("disabled-choose-tile")) {
-                        console.log("it does lol");
                         $(menuTile).removeClass("disabled-choose-tile").addClass("choose-tile");
                         $(menuTile).attr("data-disabled", "False");
                     }
@@ -273,7 +384,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
         //shooting phase
     }
     else {
-        if (parseInt(clickedBoard.attr("data-player-number")) == 1 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) {
+        if (parseInt(clickedBoard.attr("data-player-number")) == 1 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined && winnerIs <= -1) {
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
             var tile = player2Board.getTile(x, y);
@@ -288,6 +399,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                         player2Board.shipPlaced--;
                         if (player2Board.shipPlaced <= 0) {
                             console.log("victory");
+                            winnerIs = player1Board.playerID;
                         }
                     }
                     //points counting
@@ -325,9 +437,7 @@ $("#startGame").click(function (event) {
 function placeAIShips() {
     var placed = 0;
     for (var type = 1; type < shipTypes.length + 1; type++) {
-        console.log("placing now type " + type + "times " + shipTypes[type - 1]);
         while (shipTypes[type - 1] > placed) {
-            console.log("placed value: " + placed);
             var x = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
             var y = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
             var horizontal_1 = Math.random() < 0.5;
@@ -340,19 +450,22 @@ function placeAIShips() {
 }
 function shotAI() {
     while (isTurnDone) {
-        var x = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
-        var y = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
+        ShipAI.calculateNextMove();
+        var x = ShipAI.getX();
+        var y = ShipAI.getY();
         var w = player1Board.getTile(x, y);
-        if (!w.wasShot) {
-            if (!w.shoot()) {
-                isTurnDone = false;
-            }
-            else {
-                if (!w.getShip().isAlive()) {
-                    player1Board.shipPlaced--;
-                    if (player1Board.shipPlaced <= 0) {
-                        console.log("victory");
-                    }
+        if (!w.shoot()) {
+            isTurnDone = false;
+            ShipAI.markAsMissed(x, y);
+        }
+        else {
+            ShipAI.markAsHit(x, y);
+            if (!w.getShip().isAlive()) {
+                ShipAI.shipDestroyed();
+                player1Board.shipPlaced--;
+                if (player1Board.shipPlaced <= 0) {
+                    console.log("victory");
+                    winnerIs = player2Board.playerID;
                 }
             }
         }

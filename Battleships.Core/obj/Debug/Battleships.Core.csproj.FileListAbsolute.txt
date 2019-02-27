@@ -9,3 +9,4 @@ C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Core\obj\Debug\Bat
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Core\obj\Debug\Battleships.Core.csproj.CoreCompileInputs.cache
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Core\obj\Debug\Battleships.Core.dll
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Core\obj\Debug\Battleships.Core.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Core\obj\Debug\Battleships.Core.csprojAssemblyReference.cache

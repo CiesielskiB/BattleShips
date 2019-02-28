@@ -158,6 +158,7 @@ function shotAI(): void {
         } else {
             ShipAI.markAsHit(x, y);
             if (!w.getShip().isAlive()) {
+                console.log("bug ? ");
                 ShipAI.shipDestroyed();
                 player1Board.shipPlaced--;
                 if (player1Board.shipPlaced <= 0) {

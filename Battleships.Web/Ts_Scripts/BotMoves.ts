@@ -1,7 +1,8 @@
 ﻿class BotMoves {
     private currentX: number;
     private currentY: number;
-    private shipOrientation: number; // -1 - uknown, 0 - horizontal, 1 - vertical
+    private shipOrientation: number; // -1 - unknown, 0 - horizontal, 1 - vertical;
+    private shotDiection: number //-1 - unknown, 0 - right, 1 - left, 2 - up, 3 - down;
 
     private isShipHit: boolean;
     private firstHitX: number;
@@ -16,6 +17,7 @@
     constructor(boardSize: number) {
         this.boardSize = boardSize;
         this.shipOrientation = -1;
+        this.shotDiection = -1;
         this.currentX = -1;
         this.currentY = -1;
         this.isShipHit = false;
@@ -42,8 +44,13 @@
     public markAsMissed(x: number, y: number) {
         this.board[x][y] = 0;
         if (this.isShipHit) {
-            this.currentX = x;
-            this.currentY = y;
+            this.currentX = this.firstHitX;
+            this.currentY = this.firstHitY;
+            if (this.shotDiection < 2) {
+                this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+            } else {
+                this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+            }
         }
 
     }
@@ -58,8 +65,15 @@
             this.currentY = y;
         } else {
             if (this.shipOrientation < 0) {
-                if (this.currentX - x != 0) this.shipOrientation = 0;
-                if (this.currentY - y != 0) this.shipOrientation = 1;
+                if (this.firstHitX - x != 0) {
+                    this.shipOrientation = 0;
+                    this.shotDiection = (this.firstHitX - x) > 0 ? 0 : 1
+                } 
+                if (this.firstHitY - y != 0) {
+                    this.shipOrientation = 1;
+                    this.shotDiection = (this.firstHitY - y) > 0 ? 3 : 2
+                } 
+
             }
         }
     }
@@ -70,13 +84,15 @@
         this.currentX = -1;
         this.currentY = -1;
         this.shipOrientation = -1;
+        this.shotDiection = -1;
         this.isShipHit = false;
     }
 
     public calculateNextMove(): void {
         let validMove: boolean = false;
         let x:number;
-        let y:number;
+        let y: number;
+        let moves: number[] = [1, -1, 1, -1];
         if (!this.isShipHit) {
             while (!validMove) {
                 x = Math.floor(Math.random() * (this.boardSize - 1 + 1)) + 1;
@@ -87,12 +103,40 @@
             }
         } else {
             if (this.shipOrientation < 0) {
-                let randomDirection: boolean = Math.random() < 0.5;
-                if (randomDirection) {
-                    // random shot in a while
-                } else {
-                    //
+                while (!validMove) {
+                    let move = Math.floor(Math.random() * 4);
+                    if (move < 2) {
+                        if (!this.wasAlreadyShot(this.currentX + moves[move], this.currentY)) {
+                            validMove = true;
+                            this.currentX += moves[move]
+                        }
+                    } else {
+                        if (!this.wasAlreadyShot(this.currentX, this.currentY + moves[move])) {
+                            validMove = true;
+                            this.currentY += moves[move];
+                        }
+                    }
                 }
+                x = this.currentX;
+                y = this.currentY;
+            }else if (this.shipOrientation == 0) {
+                while(!validMove){
+                    if (!this.wasAlreadyShot(this.currentX + moves[this.shotDiection], this.currentY)) {
+                        validMove = true;
+                        x = this.currentX + moves[this.shotDiection];
+                        y = this.currentY;
+                    } else {
+                        console.log("nawrot");
+                        this.currentX = this.firstHitX;
+                        this.currentY = this.firstHitY;
+                        this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+                        console.log(this.shotDiection);
+                        console.log(this.currentX);
+                        console.log(this.currentY);
+                    }
+                }
+            } else if (this.shipOrientation == 1){
+
             }
         }
         this.nextMoveX = x;

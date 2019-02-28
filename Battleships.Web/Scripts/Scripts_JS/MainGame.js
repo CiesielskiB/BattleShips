@@ -213,6 +213,7 @@ var BotMoves = /** @class */ (function () {
     function BotMoves(boardSize) {
         this.boardSize = boardSize;
         this.shipOrientation = -1;
+        this.shotDiection = -1;
         this.currentX = -1;
         this.currentY = -1;
         this.isShipHit = false;
@@ -237,8 +238,14 @@ var BotMoves = /** @class */ (function () {
     BotMoves.prototype.markAsMissed = function (x, y) {
         this.board[x][y] = 0;
         if (this.isShipHit) {
-            this.currentX = x;
-            this.currentY = y;
+            this.currentX = this.firstHitX;
+            this.currentY = this.firstHitY;
+            if (this.shotDiection < 2) {
+                this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+            }
+            else {
+                this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+            }
         }
     };
     BotMoves.prototype.markAsHit = function (x, y) {
@@ -252,10 +259,14 @@ var BotMoves = /** @class */ (function () {
         }
         else {
             if (this.shipOrientation < 0) {
-                if (this.currentX - x != 0)
+                if (this.firstHitX - x != 0) {
                     this.shipOrientation = 0;
-                if (this.currentY - y != 0)
+                    this.shotDiection = (this.firstHitX - x) > 0 ? 0 : 1;
+                }
+                if (this.firstHitY - y != 0) {
                     this.shipOrientation = 1;
+                    this.shotDiection = (this.firstHitY - y) > 0 ? 3 : 2;
+                }
             }
         }
     };
@@ -265,12 +276,14 @@ var BotMoves = /** @class */ (function () {
         this.currentX = -1;
         this.currentY = -1;
         this.shipOrientation = -1;
+        this.shotDiection = -1;
         this.isShipHit = false;
     };
     BotMoves.prototype.calculateNextMove = function () {
         var validMove = false;
         var x;
         var y;
+        var moves = [1, -1, 1, -1];
         if (!this.isShipHit) {
             while (!validMove) {
                 x = Math.floor(Math.random() * (this.boardSize - 1 + 1)) + 1;
@@ -282,13 +295,43 @@ var BotMoves = /** @class */ (function () {
         }
         else {
             if (this.shipOrientation < 0) {
-                var randomDirection = Math.random() < 0.5;
-                if (randomDirection) {
-                    // random shot in a while
+                while (!validMove) {
+                    var move = Math.floor(Math.random() * 4);
+                    if (move < 2) {
+                        if (!this.wasAlreadyShot(this.currentX + moves[move], this.currentY)) {
+                            validMove = true;
+                            this.currentX += moves[move];
+                        }
+                    }
+                    else {
+                        if (!this.wasAlreadyShot(this.currentX, this.currentY + moves[move])) {
+                            validMove = true;
+                            this.currentY += moves[move];
+                        }
+                    }
                 }
-                else {
-                    //
+                x = this.currentX;
+                y = this.currentY;
+            }
+            else if (this.shipOrientation == 0) {
+                while (!validMove) {
+                    if (!this.wasAlreadyShot(this.currentX + moves[this.shotDiection], this.currentY)) {
+                        validMove = true;
+                        x = this.currentX + moves[this.shotDiection];
+                        y = this.currentY;
+                    }
+                    else {
+                        console.log("nawrot");
+                        this.currentX = this.firstHitX;
+                        this.currentY = this.firstHitY;
+                        this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+                        console.log(this.shotDiection);
+                        console.log(this.currentX);
+                        console.log(this.currentY);
+                    }
                 }
+            }
+            else if (this.shipOrientation == 1) {
             }
         }
         this.nextMoveX = x;
@@ -461,6 +504,7 @@ function shotAI() {
         else {
             ShipAI.markAsHit(x, y);
             if (!w.getShip().isAlive()) {
+                console.log("bug ? ");
                 ShipAI.shipDestroyed();
                 player1Board.shipPlaced--;
                 if (player1Board.shipPlaced <= 0) {

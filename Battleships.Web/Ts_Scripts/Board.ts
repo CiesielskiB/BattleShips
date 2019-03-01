@@ -37,8 +37,8 @@ class Board {
                 //place ships to the right of the mouse
                 for (var i: number = x; i < x + shipLenght; i++) {
                     this.tiles[i][y].setShip(ship);
+                    ship.addPositions(i, y);
                     if (!this.AIboard) {
-                        //change classes to change looks with Jquery :)
                         $("table[ data-player-number = '"+ this.playerID + "'] > tbody > tr >th[data-x =" + i + "][data-y = " + y + "]").addClass("ship-placed");
                     }
                 }
@@ -46,8 +46,8 @@ class Board {
                 //place ships downwards from the mosue
                 for (var i: number = y; i < y + shipLenght; i++) {
                     this.tiles[x][i].setShip(ship);
+                    ship.addPositions(x, i);
                     if (!this.AIboard) {
-                        //change classes to change looks with Jquery :)
                          $("table[ data-player-number = '"+ this.playerID + "'] > tbody > tr >  th[data-x =" + x + "][data-y = " + i + "]").addClass("ship-placed");
                     }
                 }
@@ -102,44 +102,39 @@ class Board {
         let startingTile: Tile = this.tiles[x][y];
         let lenght: number = startingTile.getShip().getShipType();
         let horizontal: boolean = startingTile.getShip().isHorizontal();
-        let startingX = x;
-        let startingY = y;
+        let startingX = startingTile.getShip().getFirstX();
+        let startingY = startingTile.getShip().getFirstY();
         if (horizontal) {
-            let currentTile: Tile = startingTile;
-            while (currentTile.getShip() != null) {
-                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
-                currentTile.setShip(null);
-                if (this.isValidTile(++x, y)) currentTile = this.tiles[x][y];
-            }
-            x = startingX;
-            if (this.isValidTile(--x, y)) {
-                currentTile = this.tiles[x][y];
-                while (currentTile.getShip() != null) {
-                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
-                    currentTile.setShip(null);
-                    if (this.isValidTile(--x, y)) currentTile = this.tiles[x][y];
-                }
+            for (let i: number = startingX; i < startingX + lenght; i++) {
+                this.tiles[i][startingY].setShip(null);
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + i + "][data-y = " + startingY + "]").removeClass("ship-placed");
             }
         }else {
-            let currentTile: Tile = startingTile;
-            while (currentTile.getShip() != null) {
-                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
-                currentTile.setShip(null);
-                if (this.isValidTile(x, ++y)) currentTile = this.tiles[x][y];
-            }
-            y = startingY;
-            if (this.isValidTile(x, --y)) {
-                currentTile = this.tiles[x][y];
-                while (currentTile.getShip() != null) {
-                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-placed");
-                    currentTile.setShip(null);
-                    if (this.isValidTile(x, --y)) currentTile = this.tiles[x][y];
-                }
+            for (let i: number = startingY; i < startingY + lenght; i++) {
+                this.tiles[startingX][i].setShip(null);
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + startingX + "][data-y = " + i + "]").removeClass("ship-placed");
             }
         }
         this.shipPlaced--; // decreasing number of placed ship
         this.shipTypes[lenght - 1]++; // increasing number of possible ships of this type
         return lenght;
+    }
+
+    public destroyShip(x: number, y: number): void {
+        let startingTile: Tile = this.tiles[x][y];
+        let lenght: number = startingTile.getShip().getShipType();
+        let horizontal: boolean = startingTile.getShip().isHorizontal();
+        let startingX = startingTile.getShip().getFirstX();
+        let startingY = startingTile.getShip().getFirstY();
+        if (horizontal) {
+            for (let i: number = startingX; i < startingX + lenght; i++) {
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + i + "][data-y = " + startingY + "]").addClass("ship-destroyed");
+            }
+        } else {
+            for (let i: number = startingY; i < startingY + lenght; i++) {
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + startingX + "][data-y = " + i + "]").addClass("ship-destroyed");
+            }
+        }
     }
 
     public getShipCount(shipType: number): number {
@@ -204,12 +199,29 @@ class Ship {
     private shipType: number;
     private shipHp: number;
     private horizontal: boolean;
+    private xPositions: number[];
+    private yPositions: number[];
 
 
     constructor(shipType: number, horizontal: boolean) {
         this.shipType = shipType;
         this.horizontal = horizontal;
         this.shipHp = shipType;
+        this.xPositions = [];
+        this.yPositions = [];
+    }
+
+    public addPositions(x: number, y: number) {
+        this.xPositions.push(x);
+        this.yPositions.push(y);
+    }
+
+    public getFirstX() {
+        return this.xPositions[0];
+    }
+
+    public getFirstY() {
+        return this.yPositions[0];
     }
 
     public getShipType(): number {

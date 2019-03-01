@@ -84,7 +84,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                 } else { //ship was hit
                     if (!tile.getShip().isAlive()) {
                         player2Board.shipPlaced--;
-
+                        player2Board.destroyShip(x, y);
                         if (player2Board.shipPlaced <= 0) {
                             console.log("victory");
                             winnerIs = player1Board.playerID;
@@ -93,7 +93,10 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     //points counting
                 }
                 isTurnDone = true;
-                shotAI();
+                if (winnerIs < 0) {
+                    shotAI();
+                }
+
             }
         }
     }
@@ -160,9 +163,9 @@ function shotAI(): void {
             ShipAI.markAsHit(x, y);
             isTurnDone = false;
             if (!w.getShip().isAlive()) {
-                console.log("bug ? ");
                 ShipAI.shipDestroyed();
                 player1Board.shipPlaced--;
+                player1Board.destroyShip(x, y);
                 if (player1Board.shipPlaced <= 0) {
                      console.log("victory");
                      winnerIs = player2Board.playerID;

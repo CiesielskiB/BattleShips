@@ -213,7 +213,7 @@ var BotMoves = /** @class */ (function () {
     function BotMoves(boardSize) {
         this.boardSize = boardSize;
         this.shipOrientation = -1;
-        this.shotDiection = -1;
+        this.shotDirection = -1;
         this.currentX = -1;
         this.currentY = -1;
         this.isShipHit = false;
@@ -240,12 +240,12 @@ var BotMoves = /** @class */ (function () {
         if (this.isShipHit) {
             this.currentX = this.firstHitX;
             this.currentY = this.firstHitY;
-            if (this.shotDiection > -1) {
-                if (this.shotDiection < 2) {
-                    this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+            if (this.shotDirection > -1) {
+                if (this.shotDirection < 2) {
+                    this.shotDirection = this.shotDirection == 0 ? 1 : 0;
                 }
                 else {
-                    this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+                    this.shotDirection = this.shotDirection == 2 ? 3 : 2;
                 }
             }
         }
@@ -263,11 +263,11 @@ var BotMoves = /** @class */ (function () {
             if (this.shipOrientation < 0) {
                 if (this.firstHitX - x != 0) {
                     this.shipOrientation = 0;
-                    this.shotDiection = (this.firstHitX - x) < 0 ? 0 : 1;
+                    this.shotDirection = (this.firstHitX - x) < 0 ? 0 : 1;
                 }
                 if (this.firstHitY - y != 0) {
                     this.shipOrientation = 1;
-                    this.shotDiection = (this.firstHitY - y) < 0 ? 3 : 2;
+                    this.shotDirection = (this.firstHitY - y) < 0 ? 3 : 2;
                 }
             }
         }
@@ -278,14 +278,14 @@ var BotMoves = /** @class */ (function () {
         this.currentX = -1;
         this.currentY = -1;
         this.shipOrientation = -1;
-        this.shotDiection = -1;
+        this.shotDirection = -1;
         this.isShipHit = false;
     };
     BotMoves.prototype.calculateNextMove = function () {
         var validMove = false;
         var x;
         var y;
-        var moves = [1, -1, 1, -1];
+        var moves = [1, -1, -1, 1];
         if (!this.isShipHit) {
             while (!validMove) {
                 x = Math.floor(Math.random() * (this.boardSize - 1 + 1)) + 1;
@@ -300,13 +300,13 @@ var BotMoves = /** @class */ (function () {
                 while (!validMove) {
                     var move = Math.floor(Math.random() * 4);
                     if (move < 2) {
-                        if (!this.wasAlreadyShot(this.currentX + moves[move], this.currentY)) {
+                        if (this.isValidTile(this.currentX + moves[move], this.currentY) && !this.wasAlreadyShot(this.currentX + moves[move], this.currentY)) {
                             validMove = true;
                             this.currentX += moves[move];
                         }
                     }
                     else {
-                        if (!this.wasAlreadyShot(this.currentX, this.currentY + moves[move])) {
+                        if (this.isValidTile(this.currentX, this.currentY + moves[move]) && !this.wasAlreadyShot(this.currentX, this.currentY + moves[move])) {
                             validMove = true;
                             this.currentY += moves[move];
                         }
@@ -317,26 +317,37 @@ var BotMoves = /** @class */ (function () {
             }
             else if (this.shipOrientation == 0) {
                 while (!validMove) {
-                    console.log(moves[this.shotDiection]);
-                    console.log("direction " + this.shotDiection);
-                    if (!this.wasAlreadyShot(this.currentX + moves[this.shotDiection], this.currentY)) {
+                    console.log(moves[this.shotDirection]);
+                    console.log("direction " + this.shotDirection);
+                    if (this.isValidTile(this.currentX + moves[this.shotDirection], this.currentY) && !this.wasAlreadyShot(this.currentX + moves[this.shotDirection], this.currentY)) {
                         validMove = true;
-                        x = this.currentX + moves[this.shotDiection];
+                        x = this.currentX + moves[this.shotDirection];
                         y = this.currentY;
-                        this.currentX += moves[this.shotDiection];
+                        this.currentX += moves[this.shotDirection];
                     }
                     else {
-                        console.log("nawrot");
                         this.currentX = this.firstHitX;
                         this.currentY = this.firstHitY;
-                        this.shotDiection = this.shotDiection == 0 ? 1 : 0;
-                        console.log(this.shotDiection);
-                        console.log(this.currentX);
-                        console.log(this.currentY);
+                        this.shotDirection = this.shotDirection == 0 ? 1 : 0;
                     }
                 }
             }
             else if (this.shipOrientation == 1) {
+                while (!validMove) {
+                    console.log(moves[this.shotDirection]);
+                    console.log("direction " + this.shotDirection);
+                    if (this.isValidTile(this.currentX, this.currentY + moves[this.shotDirection]) && !this.wasAlreadyShot(this.currentX, this.currentY + moves[this.shotDirection])) {
+                        validMove = true;
+                        x = this.currentX;
+                        y = this.currentY + moves[this.shotDirection];
+                        this.currentY += moves[this.shotDirection];
+                    }
+                    else {
+                        this.currentX = this.firstHitX;
+                        this.currentY = this.firstHitY;
+                        this.shotDirection = this.shotDirection == 2 ? 3 : 2;
+                    }
+                }
             }
         }
         this.nextMoveX = x;

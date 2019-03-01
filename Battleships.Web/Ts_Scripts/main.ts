@@ -84,6 +84,7 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                 } else { //ship was hit
                     if (!tile.getShip().isAlive()) {
                         player2Board.shipPlaced--;
+
                         if (player2Board.shipPlaced <= 0) {
                             console.log("victory");
                             winnerIs = player1Board.playerID;

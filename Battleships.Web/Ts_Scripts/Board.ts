@@ -205,6 +205,7 @@ class Ship {
     private shipHp: number;
     private horizontal: boolean;
 
+
     constructor(shipType: number, horizontal: boolean) {
         this.shipType = shipType;
         this.horizontal = horizontal;

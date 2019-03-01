@@ -96,11 +96,16 @@ textarea {
 
 .ship-placed{
     background-color:red;
+
 }
 
 
 .ship-hit{
     background-color:hotpink;
+}
+
+.ship-destroyed{
+    border-color: red;
 }
 
 .water-hit{

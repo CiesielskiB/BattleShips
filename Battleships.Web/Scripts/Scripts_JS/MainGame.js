@@ -240,11 +240,13 @@ var BotMoves = /** @class */ (function () {
         if (this.isShipHit) {
             this.currentX = this.firstHitX;
             this.currentY = this.firstHitY;
-            if (this.shotDiection < 2) {
-                this.shotDiection = this.shotDiection == 0 ? 1 : 0;
-            }
-            else {
-                this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+            if (this.shotDiection > -1) {
+                if (this.shotDiection < 2) {
+                    this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+                }
+                else {
+                    this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+                }
             }
         }
     };
@@ -261,11 +263,11 @@ var BotMoves = /** @class */ (function () {
             if (this.shipOrientation < 0) {
                 if (this.firstHitX - x != 0) {
                     this.shipOrientation = 0;
-                    this.shotDiection = (this.firstHitX - x) > 0 ? 0 : 1;
+                    this.shotDiection = (this.firstHitX - x) < 0 ? 0 : 1;
                 }
                 if (this.firstHitY - y != 0) {
                     this.shipOrientation = 1;
-                    this.shotDiection = (this.firstHitY - y) > 0 ? 3 : 2;
+                    this.shotDiection = (this.firstHitY - y) < 0 ? 3 : 2;
                 }
             }
         }
@@ -315,10 +317,13 @@ var BotMoves = /** @class */ (function () {
             }
             else if (this.shipOrientation == 0) {
                 while (!validMove) {
+                    console.log(moves[this.shotDiection]);
+                    console.log("direction " + this.shotDiection);
                     if (!this.wasAlreadyShot(this.currentX + moves[this.shotDiection], this.currentY)) {
                         validMove = true;
                         x = this.currentX + moves[this.shotDiection];
                         y = this.currentY;
+                        this.currentX += moves[this.shotDiection];
                     }
                     else {
                         console.log("nawrot");
@@ -434,8 +439,6 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
             if (!tile.wasShot && !isTurnDone) {
                 //ship wasnt hit
                 if (!tile.shoot()) {
-                    isTurnDone = true;
-                    shotAI();
                 }
                 else { //ship was hit
                     if (!tile.getShip().isAlive()) {
@@ -447,6 +450,8 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     }
                     //points counting
                 }
+                isTurnDone = true;
+                shotAI();
             }
         }
     }
@@ -503,6 +508,7 @@ function shotAI() {
         }
         else {
             ShipAI.markAsHit(x, y);
+            isTurnDone = false;
             if (!w.getShip().isAlive()) {
                 console.log("bug ? ");
                 ShipAI.shipDestroyed();

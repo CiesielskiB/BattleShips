@@ -81,8 +81,6 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
             if (!tile.wasShot && !isTurnDone) {
                 //ship wasnt hit
                 if (!tile.shoot()) {
-                    isTurnDone = true;
-                    shotAI();
                 } else { //ship was hit
                     if (!tile.getShip().isAlive()) {
                         player2Board.shipPlaced--;
@@ -93,6 +91,8 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                     }
                     //points counting
                 }
+                isTurnDone = true;
+                shotAI();
             }
         }
     }
@@ -157,6 +157,7 @@ function shotAI(): void {
             ShipAI.markAsMissed(x, y);
         } else {
             ShipAI.markAsHit(x, y);
+            isTurnDone = false;
             if (!w.getShip().isAlive()) {
                 console.log("bug ? ");
                 ShipAI.shipDestroyed();

@@ -46,11 +46,14 @@
         if (this.isShipHit) {
             this.currentX = this.firstHitX;
             this.currentY = this.firstHitY;
-            if (this.shotDiection < 2) {
-                this.shotDiection = this.shotDiection == 0 ? 1 : 0;
-            } else {
-                this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+            if (this.shotDiection > -1) {
+                if (this.shotDiection < 2) {
+                    this.shotDiection = this.shotDiection == 0 ? 1 : 0;
+                } else {
+                    this.shotDiection = this.shotDiection == 2 ? 3 : 2;
+                }
             }
+            
         }
 
     }
@@ -67,11 +70,11 @@
             if (this.shipOrientation < 0) {
                 if (this.firstHitX - x != 0) {
                     this.shipOrientation = 0;
-                    this.shotDiection = (this.firstHitX - x) > 0 ? 0 : 1
+                    this.shotDiection = (this.firstHitX - x) < 0 ? 0 : 1
                 } 
                 if (this.firstHitY - y != 0) {
                     this.shipOrientation = 1;
-                    this.shotDiection = (this.firstHitY - y) > 0 ? 3 : 2
+                    this.shotDiection = (this.firstHitY - y) < 0 ? 3 : 2
                 } 
 
             }
@@ -120,11 +123,14 @@
                 x = this.currentX;
                 y = this.currentY;
             }else if (this.shipOrientation == 0) {
-                while(!validMove){
+                while (!validMove) {
+                    console.log(moves[this.shotDiection]);
+                    console.log("direction " + this.shotDiection);
                     if (!this.wasAlreadyShot(this.currentX + moves[this.shotDiection], this.currentY)) {
                         validMove = true;
                         x = this.currentX + moves[this.shotDiection];
                         y = this.currentY;
+                        this.currentX += moves[this.shotDiection];
                     } else {
                         console.log("nawrot");
                         this.currentX = this.firstHitX;

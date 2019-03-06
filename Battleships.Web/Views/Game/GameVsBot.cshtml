@@ -1,0 +1,34 @@
+﻿@model Battleships.Core.Models.GameOptions
+@{
+    ViewBag.Title = "GameVsBot";
+}
+<div class="Victory-box row col-md-12 text-center">
+    <p id="Winner" class="text-center"></p>
+    <a id="BackToMenu" hidden class="text-center " >Back To Menu</a>
+</div>
+<div class="BoardsContainter center-block  col-md-12 row">
+    <div class="col-md-6 text-center">
+        @BoardHelper.CreateBoard(0, false, Model.PlayersOptions.BoardSize)
+    </div>
+    <div class="col-md-6 text-center">
+        @BoardHelper.CreateBoard(1,Model.Bot,Model.PlayersOptions.BoardSize)
+    </div>
+</div>
+<div class="UIContainer col-md-12 row center-block">
+    <div class="col-md-12 text-center center-block ship-placing-container">
+        <div style="margin-bottom:10px">
+            @BoardHelper.ShipPlacingMenu(Model.PlayersOptions.ShipTypes)
+            
+        </div>
+        <div>
+            <Button class="btn btn-default" id="orientationButton">Change orientation</Button>
+            <span id="orientationText">horizontal</span>
+
+        </div>
+        
+    </div>
+    <div class="col-md-12 text-center">
+        <button class="btn btn-default " id="startGame" disabled="disabled">Start game</button>
+    </div>
+
+</div>

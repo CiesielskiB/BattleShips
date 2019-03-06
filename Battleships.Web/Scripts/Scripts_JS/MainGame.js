@@ -459,8 +459,8 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                         player2Board.shipPlaced--;
                         player2Board.destroyShip(x, y);
                         if (player2Board.shipPlaced <= 0) {
-                            console.log("victory");
                             winnerIs = player1Board.playerID;
+                            annouceWinner();
                         }
                     }
                     //points counting
@@ -473,6 +473,19 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
         }
     }
 });
+function annouceWinner() {
+    $.ajax({
+        url: '/Game/Test',
+        data: { id: winnerIs }
+    }).done(function () {
+        alert(winnerIs + " Won");
+    });
+    var winnerText = (winnerIs == player1Board.playerID ? player1Board.playerName : player2Board.playerName) + " won this game, GJ";
+    $("#Winner").text(winnerText);
+    $("#BackToMenu").removeAttr("hidden");
+    $("#BackToMenu").addClass("btn btn-success");
+    $("#BackToMenu").attr("href", "/Game/");
+}
 function updateMenu() {
     if (player1Board.getShipCount(typeOfShipSelected) > 0) {
         $(".choosen-tile").removeClass("choosen-tile").addClass("choose-tile");
@@ -531,8 +544,8 @@ function shotAI() {
                 player1Board.shipPlaced--;
                 player1Board.destroyShip(x, y);
                 if (player1Board.shipPlaced <= 0) {
-                    console.log("victory");
                     winnerIs = player2Board.playerID;
+                    annouceWinner();
                 }
             }
         }

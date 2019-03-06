@@ -35,5 +35,10 @@ namespace Battleships.Web.Controllers
 
 			return View(gameOptions);
 		}
-    }
+
+		public void Test(int id)
+		{
+			//
+		}
+	}
 }

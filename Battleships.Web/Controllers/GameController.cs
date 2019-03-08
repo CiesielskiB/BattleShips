@@ -26,11 +26,7 @@ namespace Battleships.Web.Controllers
 			gameOptions.Bot = bot;
 			gameOptions.PlayerOne = "player1"; //change it later to get it from user
 			if (bot) gameOptions.PlayerTwo = "Beep Boop";
-			gameOptions.PlayersOptions = new OptionsModel
-			{
-				BoardSize = 10,
-				ShipTypes = new int[] { 1, 1, 1, 1, 1 }
-			};
+			gameOptions.PlayersOptions = new OptionsModel("mock");
 
 
 			return View(gameOptions);

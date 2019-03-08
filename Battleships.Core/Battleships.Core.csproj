@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\GameHistoryModel.cs" />
     <Compile Include="Models\GameOptions.cs" />
+    <Compile Include="Models\LeaderBoardModel.cs" />
     <Compile Include="Models\OptionsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

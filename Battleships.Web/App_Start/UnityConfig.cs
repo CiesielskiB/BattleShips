@@ -44,7 +44,7 @@ namespace Battleships.Web
             // container.LoadConfiguration();
 
             // TODO: Register your type's mappings here.
-            container.RegisterType<IRepository<GameOptions>, SQLRepository<GameOptions>>();
+            container.RegisterType<IRepository<PersonalOptions>, SQLRepository<PersonalOptions>>();
             container.RegisterType<IRepository<LeaderBoard>, SQLRepository<LeaderBoard>>();
             container.RegisterType<IRepository<GameHistory>, SQLRepository<GameHistory>>();
 		}

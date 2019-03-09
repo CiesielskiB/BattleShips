@@ -1,5 +1,6 @@
 ﻿using Battleships.Core.Contracts;
 using Battleships.Core.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace Battleships.Web.Controllers
     public class GameController : Controller
     {
 		//TODO get players options from database optionsContext
-		readonly IRepository<PersonalOptions> OptionsContext;
-		readonly IRepository<LeaderBoard> LeaderBoardContext;
-		readonly IRepository<GameHistory> GameHistoryContext;
+		IRepository<PersonalOptions> OptionsContext;
+		IRepository<LeaderBoard> LeaderBoardContext;
+		IRepository<GameHistory> GameHistoryContext;
 
 		public GameController(IRepository<PersonalOptions> OptionsContext, IRepository<LeaderBoard> LeaderBoardContext, IRepository<GameHistory> GameHistoryContext)
 		{
@@ -44,7 +45,11 @@ namespace Battleships.Web.Controllers
 
 		public void Test(int id)
 		{
-			//
+
+			string userId = "1";
+			var leaderBoards = LeaderBoardContext.Collection();
+			LeaderBoard playersLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == userId);
+
 		}
 	}
 }

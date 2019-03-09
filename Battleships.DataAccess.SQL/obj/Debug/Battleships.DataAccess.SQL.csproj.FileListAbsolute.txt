@@ -10,3 +10,8 @@ C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.csproj.CopyComplete
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.dll
 C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\Battleships.Core.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\bin\Debug\Battleships.Core.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.Migrations.initil.resources
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.csproj.GenerateResource.cache
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.Migrations.init2.resources

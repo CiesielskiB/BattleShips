@@ -298,6 +298,10 @@
       <Project>{008F02A6-9822-40A8-BA8D-4D7B5185C6E7}</Project>
       <Name>Battleships.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Battleships.DataAccess.SQL\Battleships.DataAccess.SQL.csproj">
+      <Project>{F8FED7BA-B113-4483-ABA5-E86344BDD320}</Project>
+      <Name>Battleships.DataAccess.SQL</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

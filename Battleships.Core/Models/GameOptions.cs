@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Battleships.Core.Models
 {
-	public class GameOptions
+	public class GameOptions : BaseEntity
 	{
 		public bool Bot { get; set; }
 		public String PlayerOne { get; set; }
 		public String PlayerTwo { get; set; }
-		public OptionsModel PlayersOptions { get; set; }
+		public PersonalOptions PlayersOptions { get; set; }
 	}
 }

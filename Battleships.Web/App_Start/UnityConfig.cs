@@ -1,3 +1,6 @@
+using Battleships.Core.Contracts;
+using Battleships.Core.Models;
+using Battleships.DataAccess.SQL;
 using System;
 
 using Unity;
@@ -41,7 +44,9 @@ namespace Battleships.Web
             // container.LoadConfiguration();
 
             // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
-        }
+            container.RegisterType<IRepository<GameOptions>, SQLRepository<GameOptions>>();
+            container.RegisterType<IRepository<LeaderBoard>, SQLRepository<LeaderBoard>>();
+            container.RegisterType<IRepository<GameHistory>, SQLRepository<GameHistory>>();
+		}
     }
 }

@@ -262,3 +262,6 @@ C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\obj\Debug\Batt
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\obj\Debug\Battleships.Web.csproj.CopyComplete
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\obj\Debug\Battleships.Web.dll
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\obj\Debug\Battleships.Web.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Battleships.DataAccess.SQL.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Battleships.DataAccess.SQL.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Battleships.DataAccess.SQL.dll.config

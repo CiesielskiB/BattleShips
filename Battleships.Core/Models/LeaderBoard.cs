@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Battleships.Core.Models
 {
-	public class LeaderBoardModel : BaseEntity
+	public class LeaderBoard : BaseEntity
 	{
 		public string UserId { get; private set; }
 		public int Wins { get; set; }
 		public int Loses { get; set; }
 		public int MatchesPlayed { get; set; }
 
-		public LeaderBoardModel(string userId)
+		public LeaderBoard(string userId)
 		{
 			this.UserId = userId;
 			this.Wins = 0;

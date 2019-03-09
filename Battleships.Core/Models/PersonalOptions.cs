@@ -1,12 +1,12 @@
 ﻿namespace Battleships.Core.Models
 {
-	public class OptionsModel : BaseEntity
+	public class PersonalOptions : BaseEntity
 	{
 		public string UserId { get; private set; }
 		public int BoardSize { get; set; }
 		public int[] ShipTypes { get; set; }
 
-		public OptionsModel(string userId)
+		public PersonalOptions(string userId)
 		{
 			this.UserId = userId;
 			BoardSize = 10;

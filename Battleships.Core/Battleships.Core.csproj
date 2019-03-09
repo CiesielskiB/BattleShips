@@ -41,15 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Models\BaseEntity.cs" />
-    <Compile Include="Models\GameHistoryModel.cs" />
+    <Compile Include="Models\GameHistory.cs" />
     <Compile Include="Models\GameOptions.cs" />
-    <Compile Include="Models\LeaderBoardModel.cs" />
-    <Compile Include="Models\OptionsModel.cs" />
+    <Compile Include="Models\LeaderBoard.cs" />
+    <Compile Include="Models\PersonalOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

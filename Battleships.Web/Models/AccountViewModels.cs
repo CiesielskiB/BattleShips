@@ -49,13 +49,12 @@ namespace Battleships.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email adress")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm Password")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Display(Name = "Remember You?")]

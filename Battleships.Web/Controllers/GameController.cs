@@ -1,6 +1,7 @@
 ﻿using Battleships.Core.Contracts;
 using Battleships.Core.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Battleships.Web.Controllers
 {
-	//[Authorize]
+	[Authorize]
     public class GameController : Controller
     {
 		//TODO get players options from database optionsContext
@@ -36,6 +37,7 @@ namespace Battleships.Web.Controllers
 			if (User.Identity.IsAuthenticated)
 			{
 				if (bot) gameOptions.PlayerTwo = "Beep Boop";
+				//var check = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Admin@mysite.pl").
 				string userId = User.Identity.GetUserId();
 				gameOptions.PlayerOne = User.Identity.GetUserName();
 				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));

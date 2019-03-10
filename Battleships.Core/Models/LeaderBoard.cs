@@ -13,6 +13,11 @@ namespace Battleships.Core.Models
 		public int Loses { get; set; }
 		public int MatchesPlayed { get; set; }
 
+		public LeaderBoard()
+		{
+
+		}
+
 		public LeaderBoard(string userId)
 		{
 			this.UserId = userId;
@@ -20,5 +25,6 @@ namespace Battleships.Core.Models
 			this.Loses = 0;
 			this.MatchesPlayed = 0;
 		}
+		
 	}
 }

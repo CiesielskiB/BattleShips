@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Battleships.Web.Models;
+using Battleships.Core.Models;
+using Battleships.Core.Contracts;
 
 namespace Battleships.Web.Controllers
 {
@@ -17,9 +19,13 @@ namespace Battleships.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+		private IRepository<LeaderBoard> LeaderBoardContext;
+		private IRepository<PersonalOptions> OptionsContext;
 
-        public AccountController()
+		public AccountController(IRepository<PersonalOptions> OptionsContext, IRepository<LeaderBoard> LeaderBoardContext)
         {
+			this.OptionsContext = OptionsContext;
+			this.LeaderBoardContext = LeaderBoardContext;
         }
 
 
@@ -150,8 +156,16 @@ namespace Battleships.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+					LeaderBoard userLeaderBoard = new LeaderBoard(user.Id);
+					LeaderBoardContext.Insert(userLeaderBoard);
+					LeaderBoardContext.Commit();
+
+					PersonalOptions userPersonalOptions = new PersonalOptions(user.Id);
+					OptionsContext.Insert(userPersonalOptions);
+					OptionsContext.Commit(); 
+
+					await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
                     // Aby uzyskać więcej informacji o sposobie włączania potwierdzania konta i resetowaniu hasła, odwiedź stronę https://go.microsoft.com/fwlink/?LinkID=320771
                     // Wyślij wiadomość e-mail z tym łączem
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

@@ -53,9 +53,7 @@ namespace Battleships.Web
             // Konfiguruj logikę weryfikacji haseł
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
+                RequiredLength = 4,
                 RequireLowercase = true,
                 RequireUppercase = true,
             };

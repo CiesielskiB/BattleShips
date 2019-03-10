@@ -70,7 +70,7 @@ namespace Battleships.Web.Models
         public string Email { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "{0} needs to be at least {2} characters long.", MinimumLength = 6)]
+		[StringLength(100, ErrorMessage = "{0} needs to be at least {2} characters long.", MinimumLength = 3)]
 		[Display(Name = "Username")]
 		public string UserName { get; set; }
 
@@ -82,7 +82,7 @@ namespace Battleships.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "Passwords don't much.")]
+        [Compare("Password", ErrorMessage = "Passwords don't match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -96,12 +96,12 @@ namespace Battleships.Web.Models
         [Required]
         [StringLength(100, ErrorMessage = "{0}  needs to be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm Password")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Potwierdź hasło")]
-        [Compare("Password", ErrorMessage = "Passwords don't much.")]
+        [Display(Name = "Confirm Password")]
+        [Compare("Password", ErrorMessage = "Passwords don't match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

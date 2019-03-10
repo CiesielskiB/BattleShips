@@ -33,11 +33,23 @@ namespace Battleships.Web.Controllers
 		public ActionResult GameVsBot(bool bot)
 		{
 			GameOptions gameOptions = new GameOptions();
-		
-			gameOptions.Bot = bot;
-			gameOptions.PlayerOne = "player1"; //change it later to get it from user
-			if (bot) gameOptions.PlayerTwo = "Beep Boop";
-			gameOptions.PlayersOptions = new PersonalOptions("mock");
+			if (User.Identity.IsAuthenticated)
+			{
+				if (bot) gameOptions.PlayerTwo = "Beep Boop";
+				string userId = User.Identity.GetUserId();
+				if (gameOptions.PlayersOptions == null)
+				{
+					return RedirectToAction("Index", "Game");
+				}
+			}
+			else
+			{
+				gameOptions.Bot = bot;
+				gameOptions.PlayerOne = "player1"; //change it later to get it from user
+				gameOptions.PlayersOptions = new PersonalOptions("mock");
+			}
+			
+			
 
 
 			return View(gameOptions);

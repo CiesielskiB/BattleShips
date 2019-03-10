@@ -6,6 +6,11 @@
 		public int BoardSize { get; set; }
 		public int[] ShipTypes { get; set; }
 
+		public PersonalOptions()
+		{
+
+		}
+
 		public PersonalOptions(string userId)
 		{
 			this.UserId = userId;
@@ -13,5 +18,6 @@
 			ShipTypes = new int[] {1, 1, 1, 1, 1};
 
 		}
+		
 	}
 }

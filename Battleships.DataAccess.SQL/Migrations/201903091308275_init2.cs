@@ -38,10 +38,10 @@ namespace Battleships.DataAccess.SQL.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         UserId = c.String(),
                         BoardSize = c.Int(nullable: false),
-                    })
+				})
                 .PrimaryKey(t => t.Id);
-            
-        }
+
+		}
         
         public override void Down()
         {

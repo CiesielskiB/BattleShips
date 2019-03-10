@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.Core.Models
 {
-	public class GameOptions : BaseEntity
+	public class GameOptions
 	{
 		public bool Bot { get; set; }
 		public String PlayerOne { get; set; }

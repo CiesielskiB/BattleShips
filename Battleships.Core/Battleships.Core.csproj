@@ -44,7 +44,7 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\GameHistory.cs" />
-    <Compile Include="Models\GameOptions.cs" />
+    <Compile Include="ViewModels\GameOptions.cs" />
     <Compile Include="Models\LeaderBoard.cs" />
     <Compile Include="Models\PersonalOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -37,6 +37,8 @@ namespace Battleships.Web.Controllers
 			{
 				if (bot) gameOptions.PlayerTwo = "Beep Boop";
 				string userId = User.Identity.GetUserId();
+				gameOptions.PlayerOne = User.Identity.GetUserName();
+				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));
 				if (gameOptions.PlayersOptions == null)
 				{
 					return RedirectToAction("Index", "Game");
@@ -58,9 +60,10 @@ namespace Battleships.Web.Controllers
 		public void Test(int id)
 		{
 
-			string userId = "1";
+			string userId = User.Identity.GetUserId();
 			var leaderBoards = LeaderBoardContext.Collection();
 			LeaderBoard playersLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == userId);
+			Console.WriteLine(playersLeaderBoard.Id);
 
 		}
 	}

@@ -15,7 +15,6 @@ namespace Battleships.Core.Models
 
 		public LeaderBoard()
 		{
-
 		}
 
 		public LeaderBoard(string userId)

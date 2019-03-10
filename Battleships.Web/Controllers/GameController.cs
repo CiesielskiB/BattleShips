@@ -36,8 +36,11 @@ namespace Battleships.Web.Controllers
 			GameOptions gameOptions = new GameOptions();
 			if (User.Identity.IsAuthenticated)
 			{
-				if (bot) gameOptions.PlayerTwo = "Beep Boop";
-				//var check = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Admin@mysite.pl").
+				
+
+
+				//var check = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Admin@mysite.pl").PasswordHash;
+				//var Try = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().PasswordHasher.VerifyHashedPassword(check, "Test123");
 				string userId = User.Identity.GetUserId();
 				gameOptions.PlayerOne = User.Identity.GetUserName();
 				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));
@@ -48,8 +51,9 @@ namespace Battleships.Web.Controllers
 			}
 			else
 			{
+				//delete later when everything works
 				gameOptions.Bot = bot;
-				gameOptions.PlayerOne = "player1"; //change it later to get it from user
+				gameOptions.PlayerOne = "player1"; 
 				gameOptions.PlayersOptions = new PersonalOptions("mock");
 			}
 			
@@ -59,14 +63,33 @@ namespace Battleships.Web.Controllers
 			return View(gameOptions);
 		}
 
-		public void Test(int id)
+		public void BotGameSave(int winner)
 		{
-
+			string botId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Bot@Battleships.com").Id;
 			string userId = User.Identity.GetUserId();
 			var leaderBoards = LeaderBoardContext.Collection();
+
 			LeaderBoard playersLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == userId);
+			LeaderBoard botsLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == botId);
+			playersLeaderBoard.MatchesPlayed++;
+			botsLeaderBoard.MatchesPlayed++;
+			if (winner == 0)
+			{
+				playersLeaderBoard.Wins++;
+				botsLeaderBoard.Loses++;
+			}
+			else
+			{
+				playersLeaderBoard.Loses++;
+				botsLeaderBoard.Wins++;
+			}
+			LeaderBoardContext.Update(playersLeaderBoard);
+			LeaderBoardContext.Update(botsLeaderBoard);
+			LeaderBoardContext.Commit();
+			//TODO GameHistory saving
 			Console.WriteLine(playersLeaderBoard.Id);
 
 		}
+	
 	}
 }

@@ -74,7 +74,7 @@ namespace Battleships.Web.Models
 		public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} needs to be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} needs to be at least {2} characters long.", MinimumLength = 4)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

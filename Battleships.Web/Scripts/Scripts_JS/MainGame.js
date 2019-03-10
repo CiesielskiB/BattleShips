@@ -475,8 +475,8 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
 });
 function annouceWinner() {
     $.ajax({
-        url: '/Game/Test',
-        data: { id: winnerIs }
+        url: '/Game/BotGameSave',
+        data: { winner: winnerIs }
     }).done(function () {
         alert(winnerIs + " Won");
     });

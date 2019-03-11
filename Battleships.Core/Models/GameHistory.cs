@@ -8,8 +8,8 @@ namespace Battleships.Core.Models
 {
 	public class GameHistory : BaseEntity
 	{
-		public string PlayerOneId { get; private set; }
-		public string PlayerTwoId { get; private set; }
+		public string PlayerOneId { get;  set; }
+		public string PlayerTwoId { get;  set; }
 		public string Winner { get;  set; }
 		public DateTimeOffset PlayedAt { get; set; }
 

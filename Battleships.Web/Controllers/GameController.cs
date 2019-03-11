@@ -36,9 +36,6 @@ namespace Battleships.Web.Controllers
 			GameOptions gameOptions = new GameOptions();
 			if (User.Identity.IsAuthenticated)
 			{
-				
-
-
 				//var check = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Admin@mysite.pl").PasswordHash;
 				//var Try = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().PasswordHasher.VerifyHashedPassword(check, "Test123");
 				string userId = User.Identity.GetUserId();
@@ -56,10 +53,6 @@ namespace Battleships.Web.Controllers
 				gameOptions.PlayerOne = "player1"; 
 				gameOptions.PlayersOptions = new PersonalOptions("mock");
 			}
-			
-			
-
-
 			return View(gameOptions);
 		}
 
@@ -86,9 +79,15 @@ namespace Battleships.Web.Controllers
 			LeaderBoardContext.Update(playersLeaderBoard);
 			LeaderBoardContext.Update(botsLeaderBoard);
 			LeaderBoardContext.Commit();
-			//TODO GameHistory saving
-			Console.WriteLine(playersLeaderBoard.Id);
 
+			GameHistory newGame = new GameHistory
+			{
+				PlayerOneId = userId,
+				PlayerTwoId = botId,
+				Winner = winner == 0 ? userId : botId
+			};
+			GameHistoryContext.Insert(newGame);
+			GameHistoryContext.Commit();
 		}
 	
 	}

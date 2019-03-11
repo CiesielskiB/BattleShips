@@ -61,6 +61,10 @@
     <Compile Include="Migrations\201903101347556_Personaloptionsupdate.Designer.cs">
       <DependentUpon>201903101347556_Personaloptionsupdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903112206224_Change to options.cs" />
+    <Compile Include="Migrations\201903112206224_Change to options.Designer.cs">
+      <DependentUpon>201903112206224_Change to options.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLRepository.cs" />
@@ -84,6 +88,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903101347556_Personaloptionsupdate.resx">
       <DependentUpon>201903101347556_Personaloptionsupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903112206224_Change to options.resx">
+      <DependentUpon>201903112206224_Change to options.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

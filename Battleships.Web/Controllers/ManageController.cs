@@ -49,12 +49,9 @@ namespace Battleships.Web.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Zmieniono hasło."
-                : message == ManageMessageId.SetPasswordSuccess ? "Ustawiono hasło."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Ustawiono dostawcę uwierzytelniania dwuetapowego."
-                : message == ManageMessageId.Error ? "Wystąpił błąd."
-                : message == ManageMessageId.AddPhoneSuccess ? "Dodano numer telefonu."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Usunięto numer telefonu."
+                message == ManageMessageId.ChangePasswordSuccess ? "password changed."
+                : message == ManageMessageId.SetPasswordSuccess ? "password set."
+                : message == ManageMessageId.Error ? "Error has occured."
                 : "";
 
             var userId = User.Identity.GetUserId();

@@ -3,6 +3,7 @@
 	public class PersonalOptions : BaseEntity
 	{
 		public string UserId { get; private set; }
+		public string Image { get; set; }
 		public int BoardSize { get; set; }
 		public int Frigate { get; set; }
 		public int Destroyer { get; set; }

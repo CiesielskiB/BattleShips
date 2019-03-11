@@ -1,0 +1,91 @@
+﻿@model Battleships.Core.ViewModels.UserPanelIndexModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>UserPanelIndexModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BoardSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BoardSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Frigate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Frigate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Destroyer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Destroyer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cruiser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cruiser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Battleship)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Battleship)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Carrier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Carrier)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Wins)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Wins)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Loses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Loses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WinRatio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WinRatio)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

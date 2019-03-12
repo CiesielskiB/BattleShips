@@ -27,6 +27,7 @@ namespace Battleships.Web.Controllers
 		}
 
 		// GET: Game
+		[AllowAnonymous]
 		public ActionResult Index()
         {
             return View();

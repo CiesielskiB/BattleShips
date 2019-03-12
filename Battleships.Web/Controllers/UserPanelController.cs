@@ -46,11 +46,11 @@ namespace Battleships.Web.Controllers
         {
 			UserPanelIndexModel model = new UserPanelIndexModel();
 			var userId = User.Identity.GetUserId();
-			LeaderBoard leaderBoard = LeaderBoardContext.Collection().FirstOrDefault(i => i.UserId == userId);
-			PersonalOptions options = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId);
+			LeaderBoard leaderBoard = LeaderBoardContext.Collection().First(i => i.UserId == userId);
+			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
 			if(options != null && leaderBoard != null)
 			{
-				model.Image = "placeholder";
+				model.Image = options.Image;
 				model.BoardSize = options.BoardSize;
 				model.Frigate = options.Frigate;
 				model.Destroyer = options.Destroyer;
@@ -60,7 +60,8 @@ namespace Battleships.Web.Controllers
 				model.Wins = leaderBoard.Wins;
 				model.Loses = leaderBoard.Loses;
 				model.WinRatio = leaderBoard.Wins / leaderBoard.Loses;
-	}
+			}
+
 
 			return View(model);
         }

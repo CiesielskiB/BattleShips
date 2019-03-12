@@ -5,10 +5,13 @@
 
 <h1 class="col-md-12 text-capitalize text-center">Welcome to the game, sing in to play</h1>
 <div class="row">
-    @Html.ActionLink("GameVsBot", "GameVsBot", "Game",new {bot = true }, new { @class = "btn btn-success col-md-6 col-md-push-3" })
+    <div class="col-md-8 mx-auto">
+        @Html.ActionLink("GameVsBot", "GameVsBot", "Game", new { bot = true }, new { @class = "btn btn-success btn-block" })
+        <a class="btn btn-light btn-outline-dark btn-block">Log in</a>
+    </div>
+    
 </div>
-<div class="row">
-    <a class=" col-md-6 col-md-push-3 btn btn-default">Log in</a>
-</div>
+
+    
 
 

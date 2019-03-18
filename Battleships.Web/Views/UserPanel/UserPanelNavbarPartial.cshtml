@@ -5,7 +5,7 @@
                 @Html.ActionLink("Main Panel", "Index", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active nav-link" : "nav-link" })
             </li>
             <li class="nav-item">
-                @Html.ActionLink("Leaderboard", "#", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "s" ? "active nav-link" : "nav-link" })
+                @Html.ActionLink("Leaderboard", "Leaderboard", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "Leaderboard" ? "active nav-link" : "nav-link" })
             </li>
             <li class="nav-item">
                 @Html.ActionLink("Game history", "#", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "s" ? "active nav-link" : "nav-link" })

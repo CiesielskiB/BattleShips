@@ -65,5 +65,22 @@ namespace Battleships.Web.Controllers
 			}
 			return View(model);
         }
+
+		public ActionResult Leaderboard()
+		{
+			UserPanelLeaderboardModel model = new UserPanelLeaderboardModel();
+			List<LeaderBoard> leaderBoards = LeaderBoardContext.Collection().ToList();
+			if(leaderBoards != null)
+			{
+				model.LeaderBoards = leaderBoards;
+				int length = leaderBoards.Count;
+				for (int i =0;i < length; i++)
+				{
+					var user = UserManager.FindById(leaderBoards[i].UserId);
+					model.UserName.Add(user.UserName);
+				}
+			}
+			return View(model);
+		}
     }
 }

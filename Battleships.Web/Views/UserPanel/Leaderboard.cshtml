@@ -1,0 +1,47 @@
+﻿@model Battleships.Core.ViewModels.UserPanelLeaderboardModel
+<div class="row">
+    @Html.Partial("UserPanelNavbarPartial")
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
+        <table class="table">
+
+            <tr>
+                <th>Lp.</th>
+                <th>Username</th>
+                <th>Games played</th>
+                <th>Wins</th>
+                <th>Loses</th>
+                <th>Win ratio</th>
+            </tr>
+
+
+            @for(int i =0;i < Model.LeaderBoards.Count;i++)
+            {
+            <tr>
+                <td>
+                    @(i+1).
+                </td>
+                <td>
+                    @Model.UserName[i]
+                </td>
+                <td>
+                    @Model.LeaderBoards[i].MatchesPlayed
+                </td>
+                <td>
+                    @Model.LeaderBoards[i].Wins
+                </td>
+                <td>
+                    @Model.LeaderBoards[i].Loses
+                </td>
+                <td>
+                    @(Math.Round((decimal)Model.LeaderBoards[i].Wins/Model.LeaderBoards[i].Loses,2))
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+            }
+
+        </table>
+    </main>
+</div>
+   

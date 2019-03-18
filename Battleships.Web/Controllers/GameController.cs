@@ -30,7 +30,7 @@ namespace Battleships.Web.Controllers
 		[AllowAnonymous]
 		public ActionResult Index()
         {
-            return View();
+			return View();
         }
 
 		public ActionResult GameVsBot(bool bot)

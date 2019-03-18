@@ -6,9 +6,33 @@
 
 <div class="row">
     @Html.Partial("UserPanelNavbarPartial")
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
+        <div class="d-flex justify-content-between  border-bottom">
             <h1>Welcome @User.Identity.Name!</h1>
         </div>
+        <div class="d-flex flex-row px-2 align-content-center">
+            <div class="d-flex flex-column">
+                <div class="img img-responsive mb-2" style="padding-top:30px;">
+                    <img class="img img-responsive" style="height:250px; margin: 0 auto;" src="~/Content/Pictures/Admin.png" />
+                </div>
+                <div class="d-flex align-self-center ">
+                    <p class="font-weight-bold">@Model.UserName</p>
+                </div>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Games played: @(Model.Wins + Model.Loses)</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Wins: @Model.Wins</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Loses: @Model.Loses</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Win Ratio: @Math.Round(Model.WinRatio,2)</p>
+            </div>
+
+        </div>
+        
     </main>
 </div>

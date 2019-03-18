@@ -50,6 +50,7 @@ namespace Battleships.Web.Controllers
 			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
 			if(options != null && leaderBoard != null)
 			{
+				model.UserName = User.Identity.GetUserName();
 				model.Image = options.Image;
 				model.BoardSize = options.BoardSize;
 				model.Frigate = options.Frigate;
@@ -59,10 +60,9 @@ namespace Battleships.Web.Controllers
 				model.Carrier = options.Carrier;
 				model.Wins = leaderBoard.Wins;
 				model.Loses = leaderBoard.Loses;
-				model.WinRatio = leaderBoard.Wins / leaderBoard.Loses;
+				
+				model.WinRatio = (decimal)leaderBoard.Wins / leaderBoard.Loses;
 			}
-
-
 			return View(model);
         }
     }

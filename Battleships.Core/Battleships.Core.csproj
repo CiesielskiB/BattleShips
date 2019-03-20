@@ -49,6 +49,7 @@
     <Compile Include="Models\LeaderBoard.cs" />
     <Compile Include="Models\PersonalOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\UserDetailsModel.cs" />
     <Compile Include="ViewModels\UserPanelIndexModel.cs" />
     <Compile Include="ViewModels\UserPanelLeaderboardModel.cs" />
   </ItemGroup>

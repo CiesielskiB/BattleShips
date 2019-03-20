@@ -61,7 +61,7 @@ namespace Battleships.Web.Controllers
 				model.Wins = leaderBoard.Wins;
 				model.Loses = leaderBoard.Loses;
 				
-				model.WinRatio = (decimal)leaderBoard.Wins / leaderBoard.Loses;
+				model.WinRatio = (decimal)leaderBoard.Wins / leaderBoard.Loses+leaderBoard.Wins;
 			}
 			return View(model);
         }
@@ -70,17 +70,40 @@ namespace Battleships.Web.Controllers
 		{
 			UserPanelLeaderboardModel model = new UserPanelLeaderboardModel();
 			List<LeaderBoard> leaderBoards = LeaderBoardContext.Collection().ToList();
+			// TODO order by wins, tiebreaker with winratio
 			if(leaderBoards != null)
 			{
 				model.LeaderBoards = leaderBoards;
 				int length = leaderBoards.Count;
 				for (int i =0;i < length; i++)
 				{
-					var user = UserManager.FindById(leaderBoards[i].UserId);
+					var userId = leaderBoards[i].UserId;
+					var image = OptionsContext.Collection().FirstOrDefault(k => k.UserId == userId).Image;
+					var user = UserManager.FindById(userId);
 					model.UserName.Add(user.UserName);
+					model.Image.Add(image);
 				}
 			}
 			return View(model);
 		}
-    }
+
+		public ActionResult PlayerDetails(string userId)
+		{
+			UserDetailsModel model = new UserDetailsModel();
+			var user = UserManager.FindById(userId);
+			var leaderBoard = LeaderBoardContext.Collection().FirstOrDefault(i => i.UserId == userId);
+			var image = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId).Image;
+			if (user != null && leaderBoard != null)
+			{
+				model.UserId = userId;
+				model.UserName = user.UserName;
+				model.Image = image;
+				model.Wins = leaderBoard.Wins;
+				model.Loses = leaderBoard.Loses;
+				model.WinRatio = (decimal)leaderBoard.Wins / leaderBoard.Wins + leaderBoard.Loses;
+			}
+			return View(model);
+		}
+
+	}
 }

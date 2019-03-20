@@ -1,15 +1,10 @@
-﻿@model Battleships.Core.ViewModels.UserPanelIndexModel
-
-@{
-    ViewBag.Title = "User Panel";
-}
+﻿@model Battleships.Core.ViewModels.UserDetailsModel
 
 <div class="row">
     @Html.Partial("UserPanelNavbarPartial")
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
-        <div class="d-flex justify-content-between  border-bottom">
-            <h1>Welcome @User.Identity.Name!</h1>
-        </div>
+        <h4>@Model.UserName's details</h4>
+        <hr />
         <div class="d-flex flex-row px-2 align-content-center">
             <div class="d-flex flex-column">
                 <div class="img img-responsive mb-2" style="padding-top:30px;">
@@ -33,6 +28,11 @@
             </div>
 
         </div>
-        
+        <p>
+            @Html.ActionLink("Back to leaderboard", "LeaderBoard")
+        </p>
     </main>
+
 </div>
+
+

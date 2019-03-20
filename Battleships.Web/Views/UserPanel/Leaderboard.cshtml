@@ -2,10 +2,11 @@
 <div class="row">
     @Html.Partial("UserPanelNavbarPartial")
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
-        <table class="table">
+        <table class="table table-striped">
 
-            <tr>
+            <tr class="thead-dark">
                 <th>Lp.</th>
+                <th></th>
                 <th>Username</th>
                 <th>Games played</th>
                 <th>Wins</th>
@@ -16,12 +17,15 @@
 
             @for(int i =0;i < Model.LeaderBoards.Count;i++)
             {
-            <tr>
+            <tr class="">
                 <td>
                     @(i+1).
                 </td>
                 <td>
-                    @Model.UserName[i]
+                    <img class="img img-thumbnail" style="max-height:40px" src="~/Content/Pictures/@Model.Image[i]" />
+                </td>
+                <td>
+                    @Html.ActionLink(Model.UserName[i], "PlayerDetails", new {userId = Model.LeaderBoards[i].UserId })
                 </td>
                 <td>
                     @Model.LeaderBoards[i].MatchesPlayed
@@ -33,10 +37,7 @@
                     @Model.LeaderBoards[i].Loses
                 </td>
                 <td>
-                    @(Math.Round((decimal)Model.LeaderBoards[i].Wins/Model.LeaderBoards[i].Loses,2))
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                    @(Math.Round((decimal)Model.LeaderBoards[i].Wins/Model.LeaderBoards[i].MatchesPlayed,2))
                 </td>
             </tr>
             }

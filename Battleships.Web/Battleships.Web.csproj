@@ -313,6 +313,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\UserPanel\UserPanelNavbarPartial.cshtml" />
     <Content Include="Views\UserPanel\Leaderboard.cshtml" />
+    <Content Include="Views\UserPanel\PlayerDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

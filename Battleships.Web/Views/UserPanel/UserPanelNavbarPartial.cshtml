@@ -8,7 +8,7 @@
                 @Html.ActionLink("Leaderboard", "Leaderboard", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "Leaderboard" ? "active nav-link" : "nav-link" })
             </li>
             <li class="nav-item">
-                @Html.ActionLink("Game history", "#", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "s" ? "active nav-link" : "nav-link" })
+                @Html.ActionLink("Game history", "GameHistory", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "s" ? "active nav-link" : "nav-link" })
             </li>
             <li class="nav-item">
                 @Html.ActionLink("Find player", "#", "UserPanel", routeValues: null, htmlAttributes: new { @class = ViewContext.RouteData.Values["action"].ToString() == "s" ? "active nav-link" : "nav-link" })

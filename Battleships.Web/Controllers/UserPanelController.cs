@@ -125,5 +125,27 @@ namespace Battleships.Web.Controllers
 			return View(model);
 		}
 
+		
+		public ActionResult FindPlayer(string searchQuery)
+		{
+			List<SearchUserModel> model = new List<SearchUserModel>();
+			if(searchQuery!= null)
+			{
+				var users = UserManager.Users.Where(i => i.UserName.Contains(searchQuery));
+				int lp = 1;
+				foreach(var user in users)
+				{
+					SearchUserModel foundUser = new SearchUserModel();
+					foundUser.lp = lp++;
+					foundUser.UserId = user.Id;
+					foundUser.UserName = user.UserName;
+					foundUser.Image = OptionsContext.Collection().FirstOrDefault(i => i.UserId == user.Id).Image;
+					model.Add(foundUser);
+				}
+			}
+
+			return View(model);
+		}
+
 	}
 }

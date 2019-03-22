@@ -315,6 +315,7 @@
     <Content Include="Views\UserPanel\Leaderboard.cshtml" />
     <Content Include="Views\UserPanel\PlayerDetails.cshtml" />
     <Content Include="Views\UserPanel\GameHistory.cshtml" />
+    <Content Include="Views\UserPanel\FindPlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

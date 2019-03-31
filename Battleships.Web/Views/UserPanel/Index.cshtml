@@ -8,7 +8,7 @@
     @Html.Partial("UserPanelNavbarPartial")
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
         <div class="d-flex justify-content-between  border-bottom">
-            <h1>Welcome @User.Identity.Name!</h1>
+            <h1>Welcome @(User.Identity.Name)!</h1>
         </div>
         <div class="d-flex flex-row px-2 align-content-center">
             <div class="d-flex flex-column">
@@ -29,10 +29,34 @@
                 <p class="font-weight-bold">Loses: @Model.Loses</p>
             </div>
             <div class="d-flex align-self-center mr-5 p-2">
-                <p class="font-weight-bold">Win Ratio: @Math.Round(Model.WinRatio,2)</p>
+                <p class="font-weight-bold">Win Ratio: @Math.Round(Model.WinRatio, 2)</p>
             </div>
 
         </div>
-        
+        <div class="d-flex justify-content-between  border-bottom">
+            <h1>Options<span style="font-size:15px">  <a href="#">(change)</a></span></h1>
+        </div>
+        <div class="d-flex flex-row px-2 align-content-center">
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Battlefield size: @(Model.BoardSize)</p>
+            </div>
+        </div>
+        <div class="d-flex flex-row px-2 align-content-center">
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Frigates: @(Model.Frigate)</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Destroyer: @(Model.Destroyer)</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Cruiser: @(Model.Cruiser)</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Battleship: @(Model.Battleship)</p>
+            </div>
+            <div class="d-flex align-self-center mr-5 p-2">
+                <p class="font-weight-bold">Carrier: @(Model.Carrier)</p>
+            </div>
+        </div>
     </main>
 </div>

@@ -61,7 +61,7 @@ namespace Battleships.Web.Controllers
 				model.Wins = leaderBoard.Wins;
 				model.Loses = leaderBoard.Loses;
 				
-				model.WinRatio = (decimal)leaderBoard.Wins /(leaderBoard.Loses+leaderBoard.Wins);
+				model.WinRatio = (leaderBoard.Loses + leaderBoard.Wins) > 0 ? (decimal)leaderBoard.Wins /(leaderBoard.Loses+leaderBoard.Wins):0;
 			}
 			return View(model);
         }
@@ -100,7 +100,7 @@ namespace Battleships.Web.Controllers
 				model.Image = image;
 				model.Wins = leaderBoard.Wins;
 				model.Loses = leaderBoard.Loses;
-				model.WinRatio = (decimal)leaderBoard.Wins /(leaderBoard.Wins + leaderBoard.Loses);
+				model.WinRatio = (leaderBoard.Wins + leaderBoard.Loses) > 0 ? (decimal)leaderBoard.Wins /(leaderBoard.Wins + leaderBoard.Loses):0;
 			}
 			return View(model);
 		}

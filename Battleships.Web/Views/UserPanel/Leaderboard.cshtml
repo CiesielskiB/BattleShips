@@ -6,12 +6,11 @@
 
             <tr class="thead-dark">
                 <th>Lp.</th>
-                <th>Player 1</th>
-                <th></th>
-                <th>Player 2</th>
-                <th></th>
-                <th>Winner</th>
-                <th>Played At</th>
+                <th>Player</th>
+                <th>Matches Played</th>
+                <th>Wins</th>
+                <th>Loses</th>
+                <th>Win ratio</th>
             </tr>
 
 
@@ -23,8 +22,6 @@
                 </td>
                 <td>
                     <img class="img img-thumbnail" style="max-height:40px" src="~/Content/Pictures/@Model.Image[i]" />
-                </td>
-                <td>
                     @Html.ActionLink(Model.UserName[i], "PlayerDetails", new {userId = Model.LeaderBoards[i].UserId })
                 </td>
                 <td>
@@ -37,7 +34,7 @@
                     @Model.LeaderBoards[i].Loses
                 </td>
                 <td>
-                    @(Math.Round((decimal)Model.LeaderBoards[i].Wins/Model.LeaderBoards[i].MatchesPlayed,2))
+                    @(Model.LeaderBoards[i].MatchesPlayed > 0 ? Math.Round((decimal)Model.LeaderBoards[i].Wins/Model.LeaderBoards[i].MatchesPlayed,2) : 0)
                 </td>
             </tr>
             }

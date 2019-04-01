@@ -66,6 +66,46 @@ namespace Battleships.Web.Controllers
 			return View(model);
         }
 
+		//get
+		public ActionResult Options()
+		{
+			var userId = User.Identity.GetUserId();
+			PersonalOptions model = OptionsContext.Collection().First(i => i.UserId == userId);
+
+			if (model != null)
+			{
+				return View(model);
+			}
+			else
+			{
+				return HttpNotFound();
+			}
+		}
+
+		[HttpPost]
+		public ActionResult Options(PersonalOptions options, string id)
+		{
+			PersonalOptions optionsToEdit = OptionsContext.Find(id);
+			if(optionsToEdit != null)
+			{
+				if (!ModelState.IsValid) return View(options);
+				optionsToEdit.BoardSize = options.BoardSize;
+				optionsToEdit.Frigate = options.Frigate;
+				optionsToEdit.Destroyer = options.Destroyer;
+				optionsToEdit.Carrier = options.Carrier;
+				optionsToEdit.Battleship = options.Battleship;
+				optionsToEdit.Cruiser = options.Cruiser;
+				OptionsContext.Commit();
+				return RedirectToAction("index", "UserPanel", new { area = "" });
+			}
+			else
+			{
+				return HttpNotFound();
+			}
+		}
+
+
+
 		public ActionResult Leaderboard()
 		{
 			UserPanelLeaderboardModel model = new UserPanelLeaderboardModel();
@@ -129,7 +169,7 @@ namespace Battleships.Web.Controllers
 		public ActionResult FindPlayer(string searchQuery)
 		{
 			List<SearchUserModel> model = new List<SearchUserModel>();
-			if(searchQuery!= null)
+			if(!string.IsNullOrEmpty(searchQuery))
 			{
 				var users = UserManager.Users.Where(i => i.UserName.Contains(searchQuery));
 				int lp = 1;

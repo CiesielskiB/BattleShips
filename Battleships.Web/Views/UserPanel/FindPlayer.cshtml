@@ -3,7 +3,10 @@
 <div class="row">
     @Html.Partial("UserPanelNavbarPartial")
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
-        <div class="row justify-content-center">
+        <div class="d-flex justify-content-between  border-bottom">
+            <h1>Search for players</h1>
+        </div>
+        <div class="row justify-content-center mt-2 mb-2">
             <div class="col-12 col-md-10 col-lg-8">
                 <form class="card card-sm">
                     <div class="card-body row no-gutters align-items-center">
@@ -21,13 +24,13 @@
             <table class="table table-striped">
                 @foreach (var item in Model)
                 {
-                    
+
 
                     <tr>
                         <td>
                             @(item.lp).
                         </td>
-                        <td >
+                        <td>
                             <img class="img img-thumbnail" style="max-height:50px" src="~/Content/Pictures/@item.Image" />
                             @Html.ActionLink(item.UserName, "PlayerDetails", new { userId = item.UserId })
                         </td>
@@ -35,7 +38,7 @@
                     </tr>
                 }
             </table>
-            
+
         </div>
     </main>
 </div>

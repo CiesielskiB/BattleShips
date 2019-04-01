@@ -2,6 +2,9 @@
 <div class="row">
     @Html.Partial("UserPanelNavbarPartial")
     <main class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-2">
+        <div class="d-flex justify-content-between  border-bottom">
+            <h1>Leaderboard</h1>
+        </div>
         <table class="table table-striped">
 
             <tr class="thead-dark">
@@ -14,29 +17,29 @@
             </tr>
 
 
-            @for(int i =0;i < Model.LeaderBoards.Count;i++)
+            @for (int i = 0; i < Model.LeaderBoards.Count; i++)
             {
-            <tr class="">
-                <td>
-                    @(i+1).
-                </td>
-                <td>
-                    <img class="img img-thumbnail" style="max-height:40px" src="~/Content/Pictures/@Model.Image[i]" />
-                    @Html.ActionLink(Model.UserName[i], "PlayerDetails", new {userId = Model.LeaderBoards[i].UserId })
-                </td>
-                <td>
-                    @Model.LeaderBoards[i].MatchesPlayed
-                </td>
-                <td>
-                    @Model.LeaderBoards[i].Wins
-                </td>
-                <td>
-                    @Model.LeaderBoards[i].Loses
-                </td>
-                <td>
-                    @(Model.LeaderBoards[i].MatchesPlayed > 0 ? Math.Round((decimal)Model.LeaderBoards[i].Wins/Model.LeaderBoards[i].MatchesPlayed,2) : 0)
-                </td>
-            </tr>
+                <tr class="">
+                    <td>
+                        @(i + 1).
+                    </td>
+                    <td>
+                        <img class="img img-thumbnail" style="max-height:40px" src="~/Content/Pictures/@Model.Image[i]" />
+                        @Html.ActionLink(Model.UserName[i], "PlayerDetails", new { userId = Model.LeaderBoards[i].UserId })
+                    </td>
+                    <td>
+                        @Model.LeaderBoards[i].MatchesPlayed
+                    </td>
+                    <td>
+                        @Model.LeaderBoards[i].Wins
+                    </td>
+                    <td>
+                        @Model.LeaderBoards[i].Loses
+                    </td>
+                    <td>
+                        @(Model.LeaderBoards[i].MatchesPlayed > 0 ? Math.Round((decimal)Model.LeaderBoards[i].Wins / Model.LeaderBoards[i].MatchesPlayed, 2) : 0)
+                    </td>
+                </tr>
             }
 
         </table>

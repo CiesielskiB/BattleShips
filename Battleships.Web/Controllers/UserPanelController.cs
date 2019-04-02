@@ -109,8 +109,7 @@ namespace Battleships.Web.Controllers
 		public ActionResult Leaderboard()
 		{
 			UserPanelLeaderboardModel model = new UserPanelLeaderboardModel();
-			List<LeaderBoard> leaderBoards = LeaderBoardContext.Collection().ToList();
-			// TODO order by wins, tiebreaker with winratio
+			List<LeaderBoard> leaderBoards = LeaderBoardContext.Collection().OrderByDescending(o => o.Wins).ThenByDescending(o => o.Wins > 0 ? o.MatchesPlayed/o.Wins : 0).ToList();
 			if(leaderBoards != null)
 			{
 				model.LeaderBoards = leaderBoards;
@@ -131,41 +130,58 @@ namespace Battleships.Web.Controllers
 		{
 			UserDetailsModel model = new UserDetailsModel();
 			var user = UserManager.FindById(userId);
-			var leaderBoard = LeaderBoardContext.Collection().FirstOrDefault(i => i.UserId == userId);
-			var image = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId).Image;
-			if (user != null && leaderBoard != null)
+			if(user != null)
 			{
-				model.UserId = userId;
-				model.UserName = user.UserName;
-				model.Image = image;
-				model.Wins = leaderBoard.Wins;
-				model.Loses = leaderBoard.Loses;
-				model.WinRatio = (leaderBoard.Wins + leaderBoard.Loses) > 0 ? (decimal)leaderBoard.Wins /(leaderBoard.Wins + leaderBoard.Loses):0;
+				var leaderBoard = LeaderBoardContext.Collection().FirstOrDefault(i => i.UserId == userId);
+				var image = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId).Image;
+				if (user != null && leaderBoard != null)
+				{
+					model.UserId = userId;
+					model.UserName = user.UserName;
+					model.Image = image;
+					model.Wins = leaderBoard.Wins;
+					model.Loses = leaderBoard.Loses;
+					model.WinRatio = (leaderBoard.Wins + leaderBoard.Loses) > 0 ? (decimal)leaderBoard.Wins / (leaderBoard.Wins + leaderBoard.Loses) : 0;
+				}
+				return View(model);
 			}
-			return View(model);
+			else
+			{
+				return HttpNotFound();
+			}
+
 		}
 
-		public ActionResult GameHistory()
+		public ActionResult GameHistory(string id)
 		{
 			UserPanelHistoryModel model = new UserPanelHistoryModel();
 			string userId = User.Identity.GetUserId();
-			model.Matches = GameHistoryContext.Collection().Where(i => i.PlayerOneId == userId || i.PlayerTwoId == userId).ToList();
+			model.Matches = string.IsNullOrEmpty(id) ?	GameHistoryContext.Collection().Where(i => i.PlayerOneId == userId || i.PlayerTwoId == userId).OrderByDescending(o => o.PlayedAt).ToList() : 
+														GameHistoryContext.Collection().Where(i => i.PlayerOneId == id || i.PlayerTwoId == id).OrderByDescending(o => o.PlayedAt).ToList();
 			int length = model.Matches.Count;
-			for(int i = 0;i < length; i++)
+			if(model.Matches != null)
 			{
-				var playerOneId = model.Matches[i].PlayerOneId;
-				var playerTwoId = model.Matches[i].PlayerTwoId;
+				for (int i = 0; i < length; i++)
+				{
+					var playerOneId = model.Matches[i].PlayerOneId;
+					var playerTwoId = model.Matches[i].PlayerTwoId;
 
-				model.PlayerOne.Add(UserManager.FindById(playerOneId).UserName);
-				model.PlayerTwo.Add(UserManager.FindById(playerTwoId).UserName);
-				model.ImagePlayerOne.Add(OptionsContext.Collection().FirstOrDefault(k => k.UserId == playerOneId).Image);
-				model.ImagePlayerTwo.Add(OptionsContext.Collection().FirstOrDefault(k => k.UserId == playerTwoId).Image);
+					model.PlayerOne.Add(UserManager.FindById(playerOneId).UserName);
+					model.PlayerTwo.Add(UserManager.FindById(playerTwoId).UserName);
+					model.ImagePlayerOne.Add(OptionsContext.Collection().FirstOrDefault(k => k.UserId == playerOneId).Image);
+					model.ImagePlayerTwo.Add(OptionsContext.Collection().FirstOrDefault(k => k.UserId == playerTwoId).Image);
+				}
+
+				return View(model);
 			}
-
-			return View(model);
+			else
+			{
+				return HttpNotFound();
+			}
+				
 		}
 
-		
+
 		public ActionResult FindPlayer(string searchQuery)
 		{
 			List<SearchUserModel> model = new List<SearchUserModel>();

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Battleships.Core.ViewModels;
 using Battleships.Core.Models;
 using Battleships.Core.Contracts;
+using System.IO;
 
 namespace Battleships.Web.Controllers
 {
@@ -65,6 +66,21 @@ namespace Battleships.Web.Controllers
 			}
 			return View(model);
         }
+
+		[HttpPost]
+		public ActionResult Index(HttpPostedFileBase image)
+		{
+			var userId = User.Identity.GetUserId();
+			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
+			if (image != null && image.ContentType.Contains("image"))
+			{				
+				options.Image = options.Id + Path.GetExtension(image.FileName);
+				image.SaveAs(Server.MapPath("//Content//Pictures//") + options.Image);
+				OptionsContext.Update(options);
+				OptionsContext.Commit();
+			}
+			return RedirectToAction("index", "UserPanel", new { area = "" });
+		}
 
 		//get
 		public ActionResult Options()

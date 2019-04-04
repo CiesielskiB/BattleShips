@@ -161,6 +161,7 @@ namespace Battleships.Web.Controllers
 					LeaderBoardContext.Commit();
 
 					PersonalOptions userPersonalOptions = new PersonalOptions(user.Id);
+					userPersonalOptions.Image = "Placeholder.png";
 					OptionsContext.Insert(userPersonalOptions);
 					OptionsContext.Commit(); 
 

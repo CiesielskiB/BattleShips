@@ -14,15 +14,12 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark  flex-md-nowrap">
         <div class="container">
-            @Html.ActionLink("Battleships", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Battleships", "Index", "Game", new { area = "" }, new { @class = "navbar-brand" })
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNavBar" aria-controls="headerNavBar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="headerNavBar">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        @Html.ActionLink("Home page", "Index", "Home", new { area = "" }, new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active nav-link" : "nav-link" })
-                    </li>
                     <li class="nav-item">
                         @Html.ActionLink("Game", "Index", "Game", new { area = "" }, new { @class = ViewContext.RouteData.Values["controller"].ToString() == "Game" ? "active nav-link" : "nav-link" })
                     </li>

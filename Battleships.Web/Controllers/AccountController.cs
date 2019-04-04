@@ -87,7 +87,7 @@ namespace Battleships.Web.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Nieprawidłowa próba logowania.");
+                    ModelState.AddModelError("", "Wrong login or passowrd.");
                     return View(model);
             }
         }
@@ -173,7 +173,7 @@ namespace Battleships.Web.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Potwierdź konto", "Potwierdź konto, klikając <a href=\"" + callbackUrl + "\">tutaj</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Game");
                 }
                 AddErrors(result);
             }
@@ -402,7 +402,7 @@ namespace Battleships.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Game");
         }
 
         //
@@ -459,7 +459,7 @@ namespace Battleships.Web.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Game");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

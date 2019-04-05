@@ -48,14 +48,42 @@ namespace Battleships.Web.Controllers
 					return RedirectToAction("Index", "Game");
 				}
 			}
-			else
-			{
-				//delete later when everything works
-				gameOptions.Bot = bot;
-				gameOptions.PlayerOne = "player1"; 
-				gameOptions.PlayersOptions = new PersonalOptions("mock");
-			}
+
 			return View(gameOptions);
+		}
+
+		//get
+		public ActionResult GamevsPlayerLogIn()
+		{
+			return View();
+		}
+
+		//post
+		[HttpPost]
+		public ActionResult GamevsPlayerLogIn(SecondPlayerLoginModel user)
+		{
+			if (!ModelState.IsValid) 
+			{
+				return View(user);
+			}
+			if(user.UserName.ToLower().Equals(User.Identity.GetUserName().ToLower())) // can't use the same user as the one logged in
+			{
+				ModelState.AddModelError("", "Can't play vs yourself :)");
+				return View(user);
+			}
+			var getUser = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(user.UserName);
+			if (getUser != null) // if user exists lets check their pw
+			{
+				var hash = getUser.PasswordHash;
+				var isCorrect = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().PasswordHasher.VerifyHashedPassword(hash, user.Password);
+				if(isCorrect == PasswordVerificationResult.Success) // if everything is fine log him in and redirect to the game
+				{
+					TempData["username"] = user.UserName; //username for later use in actually game action
+					return RedirectToAction("Index", "Game");
+				}
+			}
+			ModelState.AddModelError("", "Wrong login or passowrd.");
+			return View(user);
 		}
 
 		public void BotGameSave(int winner)

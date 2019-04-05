@@ -313,6 +313,7 @@
     <Content Include="Views\UserPanel\GameHistory.cshtml" />
     <Content Include="Views\UserPanel\FindPlayer.cshtml" />
     <Content Include="Views\UserPanel\Options.cshtml" />
+    <Content Include="Views\Game\GamevsPlayerLogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

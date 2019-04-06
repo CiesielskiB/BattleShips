@@ -314,6 +314,7 @@
     <Content Include="Views\UserPanel\FindPlayer.cshtml" />
     <Content Include="Views\UserPanel\Options.cshtml" />
     <Content Include="Views\Game\GamevsPlayerLogIn.cshtml" />
+    <Content Include="Views\Game\GamveVsPlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -86,6 +86,14 @@ namespace Battleships.Web.Controllers
 			return View(user);
 		}
 
+		public ActionResult GameVsPlayer()
+		{
+			bool isLogged = TempData.TryGetValue("username", out object username);
+			if (!isLogged) return RedirectToAction("Index", "Game");
+			TempData.Clear();
+			return View();
+		}
+
 		public void BotGameSave(int winner)
 		{
 			string botId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Bot@Battleships.com").Id;

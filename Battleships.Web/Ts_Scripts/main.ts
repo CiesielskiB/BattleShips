@@ -1,7 +1,7 @@
 ﻿/// <reference path="./Board.ts" />
 
 declare var player1Board: Board;
-declare var player2Board: Board;
+declare var enemyBoard: Board;
 declare var isTurnDone: boolean;
 declare var hasGameStarted: boolean;
 declare var shipPlacing: number;
@@ -10,13 +10,15 @@ declare var typeOfShipSelected: number;
 declare var shipTypes: number[];
 declare var horizontal: boolean;
 declare var winnerIs: number;
-declare var boardSize
+declare var boardSize: number;
+declare var isBotGame: boolean;
 declare var ShipAI: BotMoves;
 //player1 player2;
 
 $(document).ready(() => {
     let element = $("table[data-player-number = 0]");
     boardSize = parseInt($(element).attr("data-board-size"));
+    isBotGame = (($(element).attr("data-bot")) == 'True');
     shipTypes = [];
     shipsToPlace = 0;
     for (let i: number = 0; i < 5; i++) {
@@ -25,12 +27,12 @@ $(document).ready(() => {
     }
     horizontal = true;
     hasGameStarted = false;
-    shipPlacing = 1;
+    shipPlacing = isBotGame ? 1 : 2;
     typeOfShipSelected = -1;
     isTurnDone = false;
     winnerIs = -1;
-    player1Board = new Board(boardSize, shipTypes, false, "Player",0);
-    player2Board = new Board(boardSize, shipTypes, true, "Player2", 1);
+    player1Board = new Board(boardSize, shipTypes, false, "Player",0); // nazwy graczy z dom
+    enemyBoard = new Board(boardSize, shipTypes, isBotGame, "Player2", 1);
     ShipAI = new BotMoves(boardSize);
 })
 
@@ -40,30 +42,33 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
     //ship placing phase
     if (!hasGameStarted && winnerIs <= -1) {
         // checking if tile is valid
-        if (parseInt(clickedBoard.attr("data-player-number")) == 0 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) { //checking if the event is triggered by the correct board (players board)
+        if (parseInt(clickedBoard.attr("data-player-number")) == player1Board.playerID && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) { //checking if the event is triggered by the correct board (players board)
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
             //placing ships
             if (typeOfShipSelected > 0) {
                 if (player1Board.placeShip(new Ship(typeOfShipSelected, horizontal), x, y, horizontal) && x > 0 && y > 0) {
-                    shipsToPlace--;
                     updateMenu();
                     typeOfShipSelected = -1;
-                    if (shipsToPlace <= 0) {
+                    if (shipsToPlace <= player1Board.shipPlaced) {
                         shipPlacing--;
-                        $("#startGame").removeAttr("Disabled");
+                        if (isBotGame) {
+                            $("#startGame").removeAttr("Disabled");
+                        } else {
+                            $("#endTurn").removeAttr("Disabled");
+                        }
+                       
                     }
                 }
                 // deplacing ships
             } else {
                 if (player1Board.getTile(x, y).getShip() != null) {
-                    let deletedShip: number = player1Board.unplaceShip(x, y);
-                    let menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
-                    if (shipsToPlace <= 0) {
+                    if (shipsToPlace >= player1Board.shipPlaced) {
                         shipPlacing++;
                         $("#startGame").attr("disabled", "disabled");
                     }
-                    shipsToPlace++;
+                    let deletedShip: number = player1Board.unplaceShip(x, y);
+                    let menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
                     if ($(menuTile).hasClass("disabled-choose-tile")) {
                         $(menuTile).removeClass("disabled-choose-tile").addClass("choose-tile");
                         $(menuTile).attr("data-disabled", "False");
@@ -74,18 +79,18 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
         }
     //shooting phase
     } else {
-        if (parseInt(clickedBoard.attr("data-player-number")) == 1 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined && winnerIs <= -1) {
+        if (parseInt(clickedBoard.attr("data-player-number")) == enemyBoard.playerID && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined && winnerIs <= -1) {
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
-            let tile: Tile = player2Board.getTile(x, y);
+            let tile: Tile = enemyBoard.getTile(x, y);
             if (!tile.wasShot && !isTurnDone) {
                 //ship wasnt hit
                 if (!tile.shoot()) {
                 } else { //ship was hit
                     if (!tile.getShip().isAlive()) {
-                        player2Board.shipPlaced--;
-                        player2Board.destroyShip(x, y);
-                        if (player2Board.shipPlaced <= 0) {
+                        enemyBoard.shipPlaced--;
+                        enemyBoard.destroyShip(x, y);
+                        if (enemyBoard.shipPlaced <= 0) {
                             winnerIs = player1Board.playerID;
                             annouceWinner();
                             
@@ -111,7 +116,7 @@ function annouceWinner(): void {
     }).done(function () {
         alert(winnerIs + " Won");
     });
-    let winnerText: string = (winnerIs == player1Board.playerID ? player1Board.playerName : player2Board.playerName) + " won this game, GJ";
+    let winnerText: string = (winnerIs == player1Board.playerID ? player1Board.playerName : enemyBoard.playerName) + " won this game, GJ";
     $("#Winner").text(winnerText);
     $("#BackToMenu").removeAttr("hidden");
     $("#BackToMenu").addClass("btn btn-success");
@@ -126,6 +131,11 @@ function updateMenu(): void {
         $(".choosen-tile").removeClass("choosen-tile").addClass("disabled-choose-tile");
     }
     $("span[data-type='Label-ship." + (typeOfShipSelected-1) + "']").text(player1Board.getShipCount(typeOfShipSelected) + "x");
+}
+
+function resetMenu(): void {
+    $(".disabled-choose-tile").attr("data-disabled", "False");
+    $(".disabled-choose-tile").removeClass("disabled-choose-tile").addClass("choose-tile");
 }
 
 $("#orientationButton").click(function (event) {
@@ -145,9 +155,42 @@ $("#startGame").click(function (event) {
         hasGameStarted = true;
         $(this).attr("disabled", "disabled");
     }
+});
+$("#endTurn").click(function (event) {
+    if (shipPlacing <= 0) {
+        hasGameStarted = true;
+        $(this).attr("disabled", "disabled");
+    } else {
+        $(this).attr("disabled", "disabled");
+        showTurnScreen();
+        switchBoards();
+        resetMenu();
+    }
     
 
 });
+
+function showTurnScreen(): void {
+
+}
+
+
+
+function switchBoards(): void {
+    player1Board.hideTiles();
+    enemyBoard.hideTiles();
+    let leftboard = $("table[data-player-number = " + player1Board.playerID.toString() + "]");
+    let rightboard = $("table[data-player-number = " + enemyBoard.playerID.toString() + "]");
+    let temp = player1Board;
+    player1Board = enemyBoard;
+    enemyBoard = temp;
+    $(leftboard).attr("data-player-number", player1Board.playerID.toString());
+    $(rightboard).attr("data-player-number", enemyBoard.playerID.toString());
+    player1Board.showTiles();
+    enemyBoard.showShotTiles();
+}
+
+
 function placeAIShips():void {
     
     let placed:number = 0;
@@ -156,7 +199,7 @@ function placeAIShips():void {
             let x: number = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
             let y: number = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
             let horizontal:boolean = Math.random() < 0.5;
-            if (player2Board.placeShip(new Ship(type, horizontal), x, y, horizontal)) {
+            if (enemyBoard.placeShip(new Ship(type, horizontal), x, y, horizontal)) {
                 placed++;
             }
         }
@@ -181,7 +224,7 @@ function shotAI(): void {
                 player1Board.shipPlaced--;
                 player1Board.destroyShip(x, y);
                 if (player1Board.shipPlaced <= 0) {
-                    winnerIs = player2Board.playerID;
+                    winnerIs = enemyBoard.playerID;
                     annouceWinner();
                 }
             }

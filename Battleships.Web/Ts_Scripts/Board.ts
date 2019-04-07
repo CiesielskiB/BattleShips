@@ -137,6 +137,47 @@ class Board {
         }
     }
 
+    public hideTiles(): void {
+        for (let y: number = 1; y <= this.boardSize; y++) {
+            for (let x: number = 1; x <= this.boardSize; x++) {
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-destroyed ship-placed ship-hit water-hit");  
+            }
+        }
+    }
+
+    public showTiles(): void {
+        for (let y: number = 1; y <= this.boardSize; y++) {
+            for (let x: number = 1; x <= this.boardSize; x++) {
+                let tile = this.getTile(x, y);
+                if (tile.wasShot) {
+                    if (tile.getShip() != null) {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" : "ship-destroyed")
+                    }
+                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                } else {
+                    if (tile.getShip() != null) {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("ship-placed");
+                    }
+                }
+            }
+        }
+    }
+
+    public showShotTiles(): void {
+        for (let y: number = 1; y <= this.boardSize; y++) {
+            for (let x: number = 1; x <= this.boardSize; x++) {
+                let tile = this.getTile(x, y);
+                if (tile.wasShot) {
+                    if (tile.getShip() != null) {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" :"ship-destroyed")
+                    }
+                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                }
+                
+            }
+        }
+    }
+
     public getShipCount(shipType: number): number {
         return this.shipTypes[shipType - 1];
     }

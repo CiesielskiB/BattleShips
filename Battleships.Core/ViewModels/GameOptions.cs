@@ -13,7 +13,6 @@ namespace Battleships.Core.ViewModels
 		public bool Bot { get; set; }
 		public String PlayerOne { get; set; }
 		public String PlayerTwo { get; set; }
-		[DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
 		public PersonalOptions PlayersOptions { get; set; }
 	}
 }

@@ -38,10 +38,10 @@ namespace Battleships.Web.Controllers
 			GameOptions gameOptions = new GameOptions();
 			if (User.Identity.IsAuthenticated)
 			{
-				//var check = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Admin@mysite.pl").PasswordHash;
-				//var Try = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().PasswordHasher.VerifyHashedPassword(check, "Test123");
 				string userId = User.Identity.GetUserId();
 				gameOptions.PlayerOne = User.Identity.GetUserName();
+				gameOptions.PlayerTwo = "Bot";
+				gameOptions.Bot = true;
 				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));
 				if (gameOptions.PlayersOptions == null)
 				{
@@ -79,7 +79,7 @@ namespace Battleships.Web.Controllers
 				if(isCorrect == PasswordVerificationResult.Success) // if everything is fine log him in and redirect to the game
 				{
 					TempData["username"] = user.UserName; //username for later use in actually game action
-					return RedirectToAction("Index", "Game");
+					return RedirectToAction("GameVsPlayer", "Game");
 				}
 			}
 			ModelState.AddModelError("", "Wrong login or passowrd.");
@@ -91,7 +91,20 @@ namespace Battleships.Web.Controllers
 			bool isLogged = TempData.TryGetValue("username", out object username);
 			if (!isLogged) return RedirectToAction("Index", "Game");
 			TempData.Clear();
-			return View();
+			GameOptions gameOptions = new GameOptions();
+			if (User.Identity.IsAuthenticated)
+			{
+				string userId = User.Identity.GetUserId();
+				gameOptions.PlayerOne = User.Identity.GetUserName();
+				gameOptions.PlayerTwo = (string)username;
+				gameOptions.Bot = false;
+				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));
+				if (gameOptions.PlayersOptions == null)
+				{
+					return RedirectToAction("Index", "Game");
+				}
+			}
+			return View(gameOptions);
 		}
 
 		public void BotGameSave(int winner)

@@ -132,6 +132,44 @@ var Board = /** @class */ (function () {
             }
         }
     };
+    Board.prototype.hideTiles = function () {
+        for (var y = 1; y <= this.boardSize; y++) {
+            for (var x = 1; x <= this.boardSize; x++) {
+                $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").removeClass("ship-destroyed ship-placed ship-hit water-hit");
+            }
+        }
+    };
+    Board.prototype.showTiles = function () {
+        for (var y = 1; y <= this.boardSize; y++) {
+            for (var x = 1; x <= this.boardSize; x++) {
+                var tile = this.getTile(x, y);
+                if (tile.wasShot) {
+                    if (tile.getShip() != null) {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" : "ship-destroyed");
+                    }
+                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                }
+                else {
+                    if (tile.getShip() != null) {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("ship-placed");
+                    }
+                }
+            }
+        }
+    };
+    Board.prototype.showShotTiles = function () {
+        for (var y = 1; y <= this.boardSize; y++) {
+            for (var x = 1; x <= this.boardSize; x++) {
+                var tile = this.getTile(x, y);
+                if (tile.wasShot) {
+                    if (tile.getShip() != null) {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" : "ship-destroyed");
+                    }
+                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                }
+            }
+        }
+    };
     Board.prototype.getShipCount = function (shipType) {
         return this.shipTypes[shipType - 1];
     };
@@ -388,6 +426,7 @@ var BotMoves = /** @class */ (function () {
 $(document).ready(function () {
     var element = $("table[data-player-number = 0]");
     boardSize = parseInt($(element).attr("data-board-size"));
+    isBotGame = (($(element).attr("data-bot")) == 'True');
     shipTypes = [];
     shipsToPlace = 0;
     for (var i = 0; i < 5; i++) {
@@ -396,12 +435,12 @@ $(document).ready(function () {
     }
     horizontal = true;
     hasGameStarted = false;
-    shipPlacing = 1;
+    shipPlacing = isBotGame ? 1 : 2;
     typeOfShipSelected = -1;
     isTurnDone = false;
     winnerIs = -1;
-    player1Board = new Board(boardSize, shipTypes, false, "Player", 0);
-    player2Board = new Board(boardSize, shipTypes, true, "Player2", 1);
+    player1Board = new Board(boardSize, shipTypes, false, "Player", 0); // nazwy graczy z dom
+    enemyBoard = new Board(boardSize, shipTypes, isBotGame, "Player2", 1);
     ShipAI = new BotMoves(boardSize);
 });
 $(".BoardsContainter").on('click', ".tile", function (event) {
@@ -410,31 +449,34 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
     //ship placing phase
     if (!hasGameStarted && winnerIs <= -1) {
         // checking if tile is valid
-        if (parseInt(clickedBoard.attr("data-player-number")) == 0 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) { //checking if the event is triggered by the correct board (players board)
+        if (parseInt(clickedBoard.attr("data-player-number")) == player1Board.playerID && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined) { //checking if the event is triggered by the correct board (players board)
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
             //placing ships
             if (typeOfShipSelected > 0) {
                 if (player1Board.placeShip(new Ship(typeOfShipSelected, horizontal), x, y, horizontal) && x > 0 && y > 0) {
-                    shipsToPlace--;
                     updateMenu();
                     typeOfShipSelected = -1;
-                    if (shipsToPlace <= 0) {
+                    if (shipsToPlace <= player1Board.shipPlaced) {
                         shipPlacing--;
-                        $("#startGame").removeAttr("Disabled");
+                        if (isBotGame) {
+                            $("#startGame").removeAttr("Disabled");
+                        }
+                        else {
+                            $("#endTurn").removeAttr("Disabled");
+                        }
                     }
                 }
                 // deplacing ships
             }
             else {
                 if (player1Board.getTile(x, y).getShip() != null) {
-                    var deletedShip = player1Board.unplaceShip(x, y);
-                    var menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
-                    if (shipsToPlace <= 0) {
+                    if (shipsToPlace >= player1Board.shipPlaced) {
                         shipPlacing++;
                         $("#startGame").attr("disabled", "disabled");
                     }
-                    shipsToPlace++;
+                    var deletedShip = player1Board.unplaceShip(x, y);
+                    var menuTile = $("th[data-type = " + (deletedShip - 1) + "]");
                     if ($(menuTile).hasClass("disabled-choose-tile")) {
                         $(menuTile).removeClass("disabled-choose-tile").addClass("choose-tile");
                         $(menuTile).attr("data-disabled", "False");
@@ -446,19 +488,19 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
         //shooting phase
     }
     else {
-        if (parseInt(clickedBoard.attr("data-player-number")) == 1 && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined && winnerIs <= -1) {
+        if (parseInt(clickedBoard.attr("data-player-number")) == enemyBoard.playerID && $(waterTile).attr("data-x") != undefined && $(waterTile).attr("data-y") != undefined && winnerIs <= -1) {
             var x = parseInt($(waterTile).attr("data-x"));
             var y = parseInt($(waterTile).attr("data-y"));
-            var tile = player2Board.getTile(x, y);
+            var tile = enemyBoard.getTile(x, y);
             if (!tile.wasShot && !isTurnDone) {
                 //ship wasnt hit
                 if (!tile.shoot()) {
                 }
                 else { //ship was hit
                     if (!tile.getShip().isAlive()) {
-                        player2Board.shipPlaced--;
-                        player2Board.destroyShip(x, y);
-                        if (player2Board.shipPlaced <= 0) {
+                        enemyBoard.shipPlaced--;
+                        enemyBoard.destroyShip(x, y);
+                        if (enemyBoard.shipPlaced <= 0) {
                             winnerIs = player1Board.playerID;
                             annouceWinner();
                         }
@@ -480,7 +522,7 @@ function annouceWinner() {
     }).done(function () {
         alert(winnerIs + " Won");
     });
-    var winnerText = (winnerIs == player1Board.playerID ? player1Board.playerName : player2Board.playerName) + " won this game, GJ";
+    var winnerText = (winnerIs == player1Board.playerID ? player1Board.playerName : enemyBoard.playerName) + " won this game, GJ";
     $("#Winner").text(winnerText);
     $("#BackToMenu").removeAttr("hidden");
     $("#BackToMenu").addClass("btn btn-success");
@@ -495,6 +537,10 @@ function updateMenu() {
         $(".choosen-tile").removeClass("choosen-tile").addClass("disabled-choose-tile");
     }
     $("span[data-type='Label-ship." + (typeOfShipSelected - 1) + "']").text(player1Board.getShipCount(typeOfShipSelected) + "x");
+}
+function resetMenu() {
+    $(".disabled-choose-tile").attr("data-disabled", "False");
+    $(".disabled-choose-tile").removeClass("disabled-choose-tile").addClass("choose-tile");
 }
 $("#orientationButton").click(function (event) {
     horizontal = !horizontal;
@@ -512,6 +558,33 @@ $("#startGame").click(function (event) {
         $(this).attr("disabled", "disabled");
     }
 });
+$("#endTurn").click(function (event) {
+    if (shipPlacing <= 0) {
+        hasGameStarted = true;
+        $(this).attr("disabled", "disabled");
+    }
+    else {
+        $(this).attr("disabled", "disabled");
+        showTurnScreen();
+        switchBoards();
+        resetMenu();
+    }
+});
+function showTurnScreen() {
+}
+function switchBoards() {
+    player1Board.hideTiles();
+    enemyBoard.hideTiles();
+    var leftboard = $("table[data-player-number = " + player1Board.playerID.toString() + "]");
+    var rightboard = $("table[data-player-number = " + enemyBoard.playerID.toString() + "]");
+    var temp = player1Board;
+    player1Board = enemyBoard;
+    enemyBoard = temp;
+    $(leftboard).attr("data-player-number", player1Board.playerID.toString());
+    $(rightboard).attr("data-player-number", enemyBoard.playerID.toString());
+    player1Board.showTiles();
+    enemyBoard.showShotTiles();
+}
 function placeAIShips() {
     var placed = 0;
     for (var type = 1; type < shipTypes.length + 1; type++) {
@@ -519,7 +592,7 @@ function placeAIShips() {
             var x = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
             var y = Math.floor(Math.random() * (boardSize - 1 + 1)) + 1;
             var horizontal_1 = Math.random() < 0.5;
-            if (player2Board.placeShip(new Ship(type, horizontal_1), x, y, horizontal_1)) {
+            if (enemyBoard.placeShip(new Ship(type, horizontal_1), x, y, horizontal_1)) {
                 placed++;
             }
         }
@@ -544,7 +617,7 @@ function shotAI() {
                 player1Board.shipPlaced--;
                 player1Board.destroyShip(x, y);
                 if (player1Board.shipPlaced <= 0) {
-                    winnerIs = player2Board.playerID;
+                    winnerIs = enemyBoard.playerID;
                     annouceWinner();
                 }
             }

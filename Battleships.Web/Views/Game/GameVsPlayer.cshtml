@@ -6,7 +6,7 @@
     <p id="Winner" class="text-center"></p>
     <a id="BackToMenu" hidden class="text-center " >Back To Menu</a>
 </div>
-<div class="BoardsContainter center-block  col-md-12 row">
+<div class="BoardsContainter center-block col-md-12 row" >
     <div class="col-md-6 text-center">
         @BoardHelper.CreateBoard(0, Model.Bot, Model.PlayersOptions.BoardSize)
     </div>
@@ -28,7 +28,7 @@
         
     </div>
     <div class="col-md-12 text-center">
-        <button class="btn btn-primary " id="startGame" disabled="disabled">Start game</button>
+        <button class="btn btn-primary " id="endTurn" disabled="disabled">Start game</button>
     </div>
 
 </div>

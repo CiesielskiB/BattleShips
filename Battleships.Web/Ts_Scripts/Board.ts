@@ -151,9 +151,11 @@ class Board {
                 let tile = this.getTile(x, y);
                 if (tile.wasShot) {
                     if (tile.getShip() != null) {
-                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" : "ship-destroyed")
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive() ? "ship-hit" : "ship-hit ship-destroyed")
+                    } else {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
                     }
-                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                    
                 } else {
                     if (tile.getShip() != null) {
                         $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("ship-placed");
@@ -169,9 +171,11 @@ class Board {
                 let tile = this.getTile(x, y);
                 if (tile.wasShot) {
                     if (tile.getShip() != null) {
-                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" :"ship-destroyed")
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive() ? "ship-hit" : "ship-hit ship-destroyed")
+                    } else {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
                     }
-                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                    
                 }
                 
             }

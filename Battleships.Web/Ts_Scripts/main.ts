@@ -100,7 +100,12 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                 }
                 isTurnDone = true;
                 if (winnerIs < 0) {
-                    shotAI();
+                    if (isBotGame) {
+                        shotAI();
+                    } else {
+                        $("#endTurn").removeAttr("Disabled");
+                    }
+                    
                 }
 
             }
@@ -136,6 +141,9 @@ function updateMenu(): void {
 function resetMenu(): void {
     $(".disabled-choose-tile").attr("data-disabled", "False");
     $(".disabled-choose-tile").removeClass("disabled-choose-tile").addClass("choose-tile");
+    for (let i: number = 0; i < 5; i++) {
+        $("span[data-type='Label-ship." + i + "']").text(shipTypes[i] + "x");
+    }
 }
 
 $("#orientationButton").click(function (event) {
@@ -157,23 +165,27 @@ $("#startGame").click(function (event) {
     }
 });
 $("#endTurn").click(function (event) {
-    if (shipPlacing <= 0) {
+    if (shipPlacing <= 0 && !hasGameStarted) {
         hasGameStarted = true;
-        $(this).attr("disabled", "disabled");
-    } else {
-        $(this).attr("disabled", "disabled");
-        showTurnScreen();
-        switchBoards();
-        resetMenu();
+        $(".ship-placing-container").toggle("slide");
     }
-    
-
+    isTurnDone = false;
+    $(this).attr("disabled", "disabled");
+    showTurnScreen();
+    if (shipPlacing > 0) {
+        resetMenu();
+    }       
 });
 
 function showTurnScreen(): void {
-
+    $(".BoardsContainter").toggle("slide", function () { switchBoards() });
 }
 
+$("#showBoards").click(function (event) {
+    $(".ShowBoards").toggle();
+    $(".BoardsContainter").toggle("slide");
+
+});
 
 
 function switchBoards(): void {
@@ -188,6 +200,8 @@ function switchBoards(): void {
     $(rightboard).attr("data-player-number", enemyBoard.playerID.toString());
     player1Board.showTiles();
     enemyBoard.showShotTiles();
+    $(".ShowBoards").toggle("slow");
+
 }
 
 

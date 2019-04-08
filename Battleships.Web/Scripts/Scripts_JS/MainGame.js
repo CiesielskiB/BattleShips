@@ -145,9 +145,11 @@ var Board = /** @class */ (function () {
                 var tile = this.getTile(x, y);
                 if (tile.wasShot) {
                     if (tile.getShip() != null) {
-                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" : "ship-destroyed");
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive() ? "ship-hit" : "ship-hit ship-destroyed");
                     }
-                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                    else {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                    }
                 }
                 else {
                     if (tile.getShip() != null) {
@@ -163,9 +165,11 @@ var Board = /** @class */ (function () {
                 var tile = this.getTile(x, y);
                 if (tile.wasShot) {
                     if (tile.getShip() != null) {
-                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive ? "ship-hit" : "ship-destroyed");
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass(tile.getShip().isAlive() ? "ship-hit" : "ship-hit ship-destroyed");
                     }
-                    $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                    else {
+                        $("table[ data-player-number = '" + this.playerID + "'] > tbody > tr >th[data-x =" + x + "][data-y = " + y + "]").addClass("water-hit");
+                    }
                 }
             }
         }
@@ -509,7 +513,12 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
                 }
                 isTurnDone = true;
                 if (winnerIs < 0) {
-                    shotAI();
+                    if (isBotGame) {
+                        shotAI();
+                    }
+                    else {
+                        $("#endTurn").removeAttr("Disabled");
+                    }
                 }
             }
         }
@@ -541,6 +550,9 @@ function updateMenu() {
 function resetMenu() {
     $(".disabled-choose-tile").attr("data-disabled", "False");
     $(".disabled-choose-tile").removeClass("disabled-choose-tile").addClass("choose-tile");
+    for (var i = 0; i < 5; i++) {
+        $("span[data-type='Label-ship." + i + "']").text(shipTypes[i] + "x");
+    }
 }
 $("#orientationButton").click(function (event) {
     horizontal = !horizontal;
@@ -559,19 +571,24 @@ $("#startGame").click(function (event) {
     }
 });
 $("#endTurn").click(function (event) {
-    if (shipPlacing <= 0) {
+    if (shipPlacing <= 0 && !hasGameStarted) {
         hasGameStarted = true;
-        $(this).attr("disabled", "disabled");
+        $(".ship-placing-container").toggle("slide");
     }
-    else {
-        $(this).attr("disabled", "disabled");
-        showTurnScreen();
-        switchBoards();
+    isTurnDone = false;
+    $(this).attr("disabled", "disabled");
+    showTurnScreen();
+    if (shipPlacing > 0) {
         resetMenu();
     }
 });
 function showTurnScreen() {
+    $(".BoardsContainter").toggle("slide", function () { switchBoards(); });
 }
+$("#showBoards").click(function (event) {
+    $(".ShowBoards").toggle();
+    $(".BoardsContainter").toggle("slide");
+});
 function switchBoards() {
     player1Board.hideTiles();
     enemyBoard.hideTiles();
@@ -584,6 +601,7 @@ function switchBoards() {
     $(rightboard).attr("data-player-number", enemyBoard.playerID.toString());
     player1Board.showTiles();
     enemyBoard.showShotTiles();
+    $(".ShowBoards").toggle("slow");
 }
 function placeAIShips() {
     var placed = 0;

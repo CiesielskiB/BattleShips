@@ -443,8 +443,8 @@ $(document).ready(function () {
     typeOfShipSelected = -1;
     isTurnDone = false;
     winnerIs = -1;
-    player1Board = new Board(boardSize, shipTypes, false, "Player", 0); // nazwy graczy z dom
-    enemyBoard = new Board(boardSize, shipTypes, isBotGame, "Player2", 1);
+    player1Board = new Board(boardSize, shipTypes, false, $(".BoardsContainter").attr("Data-player1"), 0); // nazwy graczy z dom
+    enemyBoard = new Board(boardSize, shipTypes, isBotGame, $(".BoardsContainter").attr("Data-player2"), 1);
     ShipAI = new BotMoves(boardSize);
 });
 $(".BoardsContainter").on('click', ".tile", function (event) {
@@ -525,17 +525,24 @@ $(".BoardsContainter").on('click', ".tile", function (event) {
     }
 });
 function annouceWinner() {
+    var action = '/Game/GameSave';
+    var winnerName = winnerIs == 0 ? player1Board.playerName : enemyBoard.playerName;
+    var loserName = winnerIs == 0 ? enemyBoard.playerName : player1Board.playerName;
     $.ajax({
-        url: '/Game/BotGameSave',
-        data: { winner: winnerIs }
+        url: action,
+        data: {
+            winner: winnerName,
+            loser: loserName
+        }
     }).done(function () {
-        alert(winnerIs + " Won");
+        alert(winnerName + " Won");
     });
-    var winnerText = (winnerIs == player1Board.playerID ? player1Board.playerName : enemyBoard.playerName) + " won this game, GJ";
+    var winnerText = winnerName + " won this game, GJ";
     $("#Winner").text(winnerText);
     $("#BackToMenu").removeAttr("hidden");
     $("#BackToMenu").addClass("btn btn-success");
     $("#BackToMenu").attr("href", "/Game/");
+    $(".Victory-box").toggle("slide");
 }
 function updateMenu() {
     if (player1Board.getShipCount(typeOfShipSelected) > 0) {
@@ -642,7 +649,6 @@ function shotAI() {
         }
     }
 }
-//work in progress
 $(".ship-placing-container").on('click', ".choose-tile", function (event) {
     var choosenShip = event.target;
     if (typeOfShipSelected > 0) {

@@ -107,39 +107,68 @@ namespace Battleships.Web.Controllers
 			return View(gameOptions);
 		}
 
-		public void BotGameSave(int winner)
+		//public void BotGameSave(string winner, string loser)
+		//{
+		//	string botId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Bot@Battleships.com").Id;
+		//	string userId = User.Identity.GetUserId();
+		//	var leaderBoards = LeaderBoardContext.Collection();
+
+		//	LeaderBoard playersLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == userId);
+		//	LeaderBoard botsLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == botId);
+		//	playersLeaderBoard.MatchesPlayed++;
+		//	botsLeaderBoard.MatchesPlayed++;
+		//	if (winner == 0)
+		//	{
+		//		playersLeaderBoard.Wins++;
+		//		botsLeaderBoard.Loses++;
+		//	}
+		//	else
+		//	{
+		//		playersLeaderBoard.Loses++;
+		//		botsLeaderBoard.Wins++;
+		//	}
+		//	LeaderBoardContext.Update(playersLeaderBoard);
+		//	LeaderBoardContext.Update(botsLeaderBoard);
+		//	LeaderBoardContext.Commit();
+
+		//	GameHistory newGame = new GameHistory
+		//	{
+		//		PlayerOneId = userId,
+		//		PlayerTwoId = botId,
+		//		Winner = winner == 0 ? userId : botId
+		//	};
+		//	GameHistoryContext.Insert(newGame);
+		//	GameHistoryContext.Commit();
+		//}
+
+		public void GameSave(string winner, string loser)
 		{
-			string botId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Bot@Battleships.com").Id;
-			string userId = User.Identity.GetUserId();
+			string winnerId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(winner).Id;
+			string LoserId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(loser).Id;
 			var leaderBoards = LeaderBoardContext.Collection();
 
-			LeaderBoard playersLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == userId);
-			LeaderBoard botsLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == botId);
-			playersLeaderBoard.MatchesPlayed++;
-			botsLeaderBoard.MatchesPlayed++;
-			if (winner == 0)
-			{
-				playersLeaderBoard.Wins++;
-				botsLeaderBoard.Loses++;
-			}
-			else
-			{
-				playersLeaderBoard.Loses++;
-				botsLeaderBoard.Wins++;
-			}
-			LeaderBoardContext.Update(playersLeaderBoard);
-			LeaderBoardContext.Update(botsLeaderBoard);
+			LeaderBoard winnerLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == winnerId);
+			LeaderBoard loserLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == LoserId);
+			winnerLeaderBoard.MatchesPlayed++;
+			loserLeaderBoard.MatchesPlayed++;
+
+			winnerLeaderBoard.Wins++;
+			loserLeaderBoard.Loses++;
+
+			LeaderBoardContext.Update(winnerLeaderBoard);
+			LeaderBoardContext.Update(loserLeaderBoard);
 			LeaderBoardContext.Commit();
 
+			var playerOneId = User.Identity.GetUserId();
 			GameHistory newGame = new GameHistory
 			{
-				PlayerOneId = userId,
-				PlayerTwoId = botId,
-				Winner = winner == 0 ? userId : botId
+				PlayerOneId = playerOneId,
+				PlayerTwoId = String.Equals(playerOneId, winnerId) ? LoserId : winnerId,
+				Winner = winnerId
 			};
 			GameHistoryContext.Insert(newGame);
 			GameHistoryContext.Commit();
 		}
-	
+
 	}
 }

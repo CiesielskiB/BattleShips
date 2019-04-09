@@ -2,11 +2,16 @@
 @{
     ViewBag.Title = "GameVsBot";
 }
-<div class="Victory-box row col-md-12 text-center">
-    <p id="Winner" class="text-center"></p>
-    <a id="BackToMenu" hidden class="text-center " >Back To Menu</a>
+<div  style="display: none" class="Victory-box row col-md-12 text-center justify-content-center p-4 d-flex flex-column">
+    <div class="d-flex align-self-center">
+        <p id="Winner" class="text-center"></p>
+    </div>
+    <div class="d-flex align-self-center">
+        <a id="BackToMenu" hidden class="text-center">Back To Menu</a>
+    </div>
+    
 </div>
-<div class="BoardsContainter center-block  col-md-12 row">
+<div class="BoardsContainter center-block  col-md-12 row" data-player1="@Model.PlayerOne" data-player2="@Model.PlayerTwo">
     <div class="col-md-6 text-center">
         @BoardHelper.CreateBoard(0, Model.Bot, Model.PlayersOptions.BoardSize)
     </div>

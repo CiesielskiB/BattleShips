@@ -177,6 +177,8 @@ $("#endTurn").click(function (event) {
     }
     isTurnDone = false;
     $(this).attr("disabled", "disabled");
+    let turnText: string = enemyBoard.playerName + " turn";
+    $("#TurnText").text(turnText);
     showTurnScreen();
     if (shipPlacing > 0) {
         resetMenu();

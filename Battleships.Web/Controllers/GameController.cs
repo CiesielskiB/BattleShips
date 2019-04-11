@@ -14,7 +14,6 @@ namespace Battleships.Web.Controllers
 	[Authorize]
     public class GameController : Controller
     {
-		//TODO get players options from database optionsContext
 		IRepository<PersonalOptions> OptionsContext;
 		IRepository<LeaderBoard> LeaderBoardContext;
 		IRepository<GameHistory> GameHistoryContext;
@@ -33,7 +32,7 @@ namespace Battleships.Web.Controllers
 			return View();
         }
 
-		public ActionResult GameVsBot(bool bot)
+		public ActionResult GameVsBot()
 		{
 			GameOptions gameOptions = new GameOptions();
 			if (User.Identity.IsAuthenticated)

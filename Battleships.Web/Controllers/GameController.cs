@@ -46,9 +46,14 @@ namespace Battleships.Web.Controllers
 				{
 					return RedirectToAction("Index", "Game");
 				}
+				return View(gameOptions);
+			}
+			else
+			{
+				return RedirectToAction("Index", "Game");
 			}
 
-			return View(gameOptions);
+			
 		}
 
 		//get

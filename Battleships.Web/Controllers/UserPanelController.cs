@@ -22,9 +22,11 @@ namespace Battleships.Web.Controllers
 		private IRepository<PersonalOptions> OptionsContext;
 		private IRepository<LeaderBoard> LeaderBoardContext;
 		private IRepository<GameHistory> GameHistoryContext;
+		public Func<string> getUserId;
 
 		public UserPanelController(IRepository<PersonalOptions> OptionsContext, IRepository<LeaderBoard> LeaderBoardContext, IRepository<GameHistory> GameHistoryContext)
 		{
+			getUserId = () => User.Identity.GetUserId();
 			this.OptionsContext = OptionsContext;
 			this.LeaderBoardContext = LeaderBoardContext;
 			this.GameHistoryContext = GameHistoryContext;
@@ -46,7 +48,7 @@ namespace Battleships.Web.Controllers
 		public ActionResult Index()
         {
 			UserPanelIndexModel model = new UserPanelIndexModel();
-			var userId = User.Identity.GetUserId();
+			var userId = getUserId();
 			LeaderBoard leaderBoard = LeaderBoardContext.Collection().First(i => i.UserId == userId);
 			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
 			if(options != null && leaderBoard != null)
@@ -70,7 +72,7 @@ namespace Battleships.Web.Controllers
 		[HttpPost]
 		public ActionResult Index(HttpPostedFileBase image)
 		{
-			var userId = User.Identity.GetUserId();
+			var userId = getUserId();
 			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
 			if (image != null && image.ContentType.Contains("image"))
 			{				
@@ -85,7 +87,7 @@ namespace Battleships.Web.Controllers
 		//get
 		public ActionResult Options()
 		{
-			var userId = User.Identity.GetUserId();
+			var userId = getUserId();
 			PersonalOptions model = OptionsContext.Collection().First(i => i.UserId == userId);
 
 			if (model != null)
@@ -171,7 +173,7 @@ namespace Battleships.Web.Controllers
 		public ActionResult GameHistory(string id)
 		{
 			UserPanelHistoryModel model = new UserPanelHistoryModel();
-			string userId = User.Identity.GetUserId();
+			string userId = getUserId();
 			model.Matches = string.IsNullOrEmpty(id) ?	GameHistoryContext.Collection().Where(i => i.PlayerOneId == userId || i.PlayerTwoId == userId).OrderByDescending(o => o.PlayedAt).ToList() : 
 														GameHistoryContext.Collection().Where(i => i.PlayerOneId == id || i.PlayerTwoId == id).OrderByDescending(o => o.PlayedAt).ToList();
 			int length = model.Matches.Count;

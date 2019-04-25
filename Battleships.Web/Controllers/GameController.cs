@@ -18,8 +18,11 @@ namespace Battleships.Web.Controllers
 		IRepository<LeaderBoard> LeaderBoardContext;
 		IRepository<GameHistory> GameHistoryContext;
 
+		public Func<string> getUserId;
+
 		public GameController(IRepository<PersonalOptions> OptionsContext, IRepository<LeaderBoard> LeaderBoardContext, IRepository<GameHistory> GameHistoryContext)
 		{
+			getUserId = () => User.Identity.GetUserId();
 			this.OptionsContext = OptionsContext;
 			this.LeaderBoardContext = LeaderBoardContext;
 			this.GameHistoryContext = GameHistoryContext;
@@ -37,11 +40,11 @@ namespace Battleships.Web.Controllers
 			GameOptions gameOptions = new GameOptions();
 			if (User.Identity.IsAuthenticated)
 			{
-				string userId = User.Identity.GetUserId();
+				string userId = getUserId();
 				gameOptions.PlayerOne = User.Identity.GetUserName();
 				gameOptions.PlayerTwo = "Bot";
 				gameOptions.Bot = true;
-				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));
+				gameOptions.PlayersOptions = OptionsContext.Collection().FirstOrDefault(i => i.UserId.Equals(userId));
 				if (gameOptions.PlayersOptions == null)
 				{
 					return RedirectToAction("Index", "Game");
@@ -98,7 +101,7 @@ namespace Battleships.Web.Controllers
 			GameOptions gameOptions = new GameOptions();
 			if (User.Identity.IsAuthenticated)
 			{
-				string userId = User.Identity.GetUserId();
+				string userId = getUserId();
 				gameOptions.PlayerOne = User.Identity.GetUserName();
 				gameOptions.PlayerTwo = (string)username;
 				gameOptions.Bot = false;
@@ -163,7 +166,7 @@ namespace Battleships.Web.Controllers
 			LeaderBoardContext.Update(loserLeaderBoard);
 			LeaderBoardContext.Commit();
 
-			var playerOneId = User.Identity.GetUserId();
+			var playerOneId = getUserId();
 			GameHistory newGame = new GameHistory
 			{
 				PlayerOneId = playerOneId,

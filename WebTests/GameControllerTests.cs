@@ -6,22 +6,23 @@ using Moq;
 using WebTests.Mocks;
 using System.Web.Mvc;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace WebTests
 {
+
 	[TestClass]
 	public class GameControllerTests
 	{
 		GameController CreateGameControllerAs(string userName, string id)
 		{
-			var claim = new Claim("test", id);
-			var mockIdentity = Mock.Of<ClaimsIdentity>(ci => ci.FindFirst(It.IsAny<string>()) == claim);
-
-			var mockContext = Mock.Of<ControllerContext>(cc => cc.HttpContext.User.Identity == mockIdentity);
-		
-
+			var controllerContextMock = new Mock<ControllerContext>();
+			controllerContextMock.Setup(i => i.HttpContext.User.Identity.IsAuthenticated).Returns(true);
+			controllerContextMock.Setup(i => i.HttpContext.User.Identity.Name).Returns(userName);
 			GameController controller = CreateGameController();
-			controller.ControllerContext = mockContext;
+			controller.getUserId = () => id;
+			controller.ControllerContext = controllerContextMock.Object;
+
 
 			return controller;
 		}

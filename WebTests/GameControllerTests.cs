@@ -96,6 +96,33 @@ namespace WebTests
 
 		}
 
+		[TestMethod]
+		public void GamevsPlayerLogIn_LoginModelIsInvalid_ViewResult()
+		{
+			//Arrange
+			var controller = CreateGameControllerAs("Test", "1",false);
+			var userModel = new SecondPlayerLoginModel();
+			controller.ModelState.AddModelError("key", "error message");
+			//Act
+			var GamevsPlayerLogIn = controller.GamevsPlayerLogIn(userModel);
+			//Assert
+			Assert.IsInstanceOfType(GamevsPlayerLogIn, typeof(ViewResult));
+		}
+
+		[TestMethod]
+		public void GamevsPlayerLogIn_SameUserLogsIn_ModelErrorAdded()
+		{
+			//Arrange
+			var controller = CreateGameControllerAs("Test", "1", false);
+			var userModel = new SecondPlayerLoginModel();
+			userModel.UserName = "Test";
+			//Act
+			var GamevsPlayerLogIn = controller.GamevsPlayerLogIn(userModel);
+			//Assert
+			Assert.IsInstanceOfType(GamevsPlayerLogIn, typeof(ViewResult));
+			Assert.AreEqual(1, controller.ModelState.Count);
+		}
+
 
 	}
 }

@@ -41,7 +41,7 @@ namespace Battleships.Web.Controllers
 			if (User.Identity.IsAuthenticated)
 			{
 				string userId = getUserId();
-				gameOptions.PlayerOne = User.Identity.GetUserName();
+				gameOptions.PlayerOne = User.Identity.Name;
 				gameOptions.PlayerTwo = "Bot";
 				gameOptions.Bot = true;
 				gameOptions.PlayersOptions = OptionsContext.Collection().FirstOrDefault(i => i.UserId.Equals(userId));
@@ -73,7 +73,7 @@ namespace Battleships.Web.Controllers
 			{
 				return View(user);
 			}
-			if(user.UserName.ToLower().Equals(User.Identity.GetUserName().ToLower())) // can't use the same user as the one logged in
+			if(user.UserName.ToLower().Equals(User.Identity.Name.ToLower())) // can't use the same user as the one logged in
 			{
 				ModelState.AddModelError("", "Can't play vs yourself :)");
 				return View(user);
@@ -102,7 +102,7 @@ namespace Battleships.Web.Controllers
 			if (User.Identity.IsAuthenticated)
 			{
 				string userId = getUserId();
-				gameOptions.PlayerOne = User.Identity.GetUserName();
+				gameOptions.PlayerOne = User.Identity.Name;
 				gameOptions.PlayerTwo = (string)username;
 				gameOptions.Bot = false;
 				gameOptions.PlayersOptions = OptionsContext.Collection().First(i => i.UserId.Equals(userId));
@@ -113,40 +113,6 @@ namespace Battleships.Web.Controllers
 			}
 			return View(gameOptions);
 		}
-
-		//public void BotGameSave(string winner, string loser)
-		//{
-		//	string botId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByEmail("Bot@Battleships.com").Id;
-		//	string userId = User.Identity.GetUserId();
-		//	var leaderBoards = LeaderBoardContext.Collection();
-
-		//	LeaderBoard playersLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == userId);
-		//	LeaderBoard botsLeaderBoard = leaderBoards.FirstOrDefault(i => i.UserId == botId);
-		//	playersLeaderBoard.MatchesPlayed++;
-		//	botsLeaderBoard.MatchesPlayed++;
-		//	if (winner == 0)
-		//	{
-		//		playersLeaderBoard.Wins++;
-		//		botsLeaderBoard.Loses++;
-		//	}
-		//	else
-		//	{
-		//		playersLeaderBoard.Loses++;
-		//		botsLeaderBoard.Wins++;
-		//	}
-		//	LeaderBoardContext.Update(playersLeaderBoard);
-		//	LeaderBoardContext.Update(botsLeaderBoard);
-		//	LeaderBoardContext.Commit();
-
-		//	GameHistory newGame = new GameHistory
-		//	{
-		//		PlayerOneId = userId,
-		//		PlayerTwoId = botId,
-		//		Winner = winner == 0 ? userId : botId
-		//	};
-		//	GameHistoryContext.Insert(newGame);
-		//	GameHistoryContext.Commit();
-		//}
 
 		public void GameSave(string winner, string loser)
 		{

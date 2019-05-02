@@ -42,7 +42,7 @@ namespace WebTests.Mocks
 		{
 			T item = items.Find(i => i.Id == Id);
 			if (item != null) return item;
-			else throw new Exception(className + "not found");
+			else return null;
 		}
 		public void Delete(string Id)
 		{

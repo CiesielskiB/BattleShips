@@ -49,8 +49,8 @@ namespace Battleships.Web.Controllers
         {
 			UserPanelIndexModel model = new UserPanelIndexModel();
 			var userId = getUserId();
-			LeaderBoard leaderBoard = LeaderBoardContext.Collection().First(i => i.UserId == userId);
-			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
+			LeaderBoard leaderBoard = LeaderBoardContext.Collection().FirstOrDefault(i => i.UserId == userId);
+			PersonalOptions options = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId);
 			if(options != null && leaderBoard != null)
 			{
 				model.UserName = User.Identity.GetUserName();
@@ -73,7 +73,7 @@ namespace Battleships.Web.Controllers
 		public ActionResult Index(HttpPostedFileBase image)
 		{
 			var userId = getUserId();
-			PersonalOptions options = OptionsContext.Collection().First(i => i.UserId == userId);
+			PersonalOptions options = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId);
 			if (image != null && image.ContentType.Contains("image"))
 			{				
 				options.Image = options.Id + Path.GetExtension(image.FileName);
@@ -88,7 +88,7 @@ namespace Battleships.Web.Controllers
 		public ActionResult Options()
 		{
 			var userId = getUserId();
-			PersonalOptions model = OptionsContext.Collection().First(i => i.UserId == userId);
+			PersonalOptions model = OptionsContext.Collection().FirstOrDefault(i => i.UserId == userId);
 
 			if (model != null)
 			{

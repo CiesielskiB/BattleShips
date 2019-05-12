@@ -143,5 +143,21 @@ namespace Battleships.Web.Controllers
 			GameHistoryContext.Commit();
 		}
 
+		public ActionResult Lobby()
+		{
+			var model = new LobbyViewModel();
+			model.CurrentUser = User.Identity.Name;
+			model.UserList = new List<string>();
+			foreach(var user in HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().Users.ToList())
+			{
+				if (!model.CurrentUser.Equals(user.UserName))
+				{
+					model.UserList.Add(user.UserName);
+				}
+			}
+
+			return View(model);
+		}
+
 	}
 }

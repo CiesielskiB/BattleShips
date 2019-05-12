@@ -268,3 +268,9 @@ C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Bat
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\bin\Battleships.DataAccess.SQL.dll
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\bin\Battleships.DataAccess.SQL.pdb
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.Web\bin\Battleships.DataAccess.SQL.dll.config
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\pl\Microsoft.AspNet.SignalR.Core.resources.dll
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.Web\bin\pl\Microsoft.AspNet.SignalR.SystemWeb.resources.dll

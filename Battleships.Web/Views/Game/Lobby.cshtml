@@ -60,12 +60,15 @@
                         ' <div class="talktext"><span class="word-wrap">' + htmlEncode(message) + '</span></div>' +
                         '</div ></li > ');
                 }
+             };
+            chat.client.logInUser = function (id) {
+                $("#chat_user_" + id).prependTo($(".list"));
+                $("#status-icon-" + id).removeClass("offline").addClass("online");
+                $("#status-user-" + id).html("online");
+                $("#battle-btn-" + id).show();
+                chat.server.feedback(displayName, id);
+             };
 
-
-
-                
-
-            };
             // Get the user name and store it to prepend to messages.
              var displayName = "@Model.CurrentUser"
             // Set initial focus to message input box.

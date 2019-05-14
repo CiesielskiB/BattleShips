@@ -67,7 +67,13 @@
                 $("#status-user-" + id).html("online");
                 $("#battle-btn-" + id).show();
                 chat.server.feedback(displayName, id);
-             };
+            }; 
+            chat.client.logOutUser = function (id) {
+                $("#chat_user_" + id).prependTo($(".list"));
+                $("#status-icon-" + id).removeClass("online").addClass("offline");
+                $("#status-user-" + id).html("offline");
+                $("#battle-btn-" + id).hide();
+            };
 
             // Get the user name and store it to prepend to messages.
              var displayName = "@Model.CurrentUser"

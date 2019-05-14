@@ -23,6 +23,14 @@ namespace Battleships.Web
 			return base.OnConnected();
 		}
 
+		public override Task OnDisconnected(bool stopCalled)
+		{
+			string name = Context.User.Identity.Name;
+			_connections.Remove(name, Context.ConnectionId);
+			Clients.Others.LogOutUser(name);
+			return base.OnDisconnected(stopCalled);
+		}
+
 		public void Send(string name, string message)
 		{
 			// Call the addNewMessageToPage method to update clients.

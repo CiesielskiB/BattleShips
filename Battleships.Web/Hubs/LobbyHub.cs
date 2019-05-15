@@ -42,7 +42,29 @@ namespace Battleships.Web
 			Clients.Group(caller).LogInUser(name);
 		}
 
+		public void ChallengeToBattle(string enemy, string challenger)
+		{
+			Clients.Group(enemy).OpenChallengeDialog(challenger);
+		}
 
+
+		// check how it works with other hub to provide fight information
+		public void BattleAnswer(bool decision, string reciever)
+		{
+			if (decision)
+			{
+				Clients.Group(reciever).AcceptChallenge();
+			}
+			else
+			{
+				Clients.Group(reciever).DeclineChallenge();
+			}
+		}
+
+		public void CancelInvitation(string reciever)
+		{
+			Clients.Group(reciever).InformAboutCanceling();
+		}
 
 	}
 }

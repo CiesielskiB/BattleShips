@@ -7,7 +7,7 @@
     <div class="navbar col-md-2 d-none d-md-block ">
         <div class="bg-dark pt-2" id="people-list">
             <!-- User list -->
-            @{Html.RenderPartial("_UserList",Model.UserList); }
+            @{Html.RenderPartial("_UserList", Model.UserList); }
             <!--end user list -->
         </div>
     </div>
@@ -29,10 +29,91 @@
                 <div class="text-center  ">
                     <button class=" btn btn-info" id="sendmessage">Send</button>
                 </div>
-                
+
             </div> <!-- end chat-message -->
         </div> <!-- end chat -->
     </main>
+</div>
+
+<!--Wait modal-->
+<div id="waitModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" onclick="cancelInvitation('challengedUser')" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Waiting for a response from <span id="challengedUser"></span></p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" onclick="cancelInvitation('challengedUser')" class="btn btn-danger" data-dismiss="modal">Cancel invitation</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--challenge Modal -->
+<div id="challengeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" onclick="battleAnswer(false, 'challengerName')" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <p><span id="challengerName"></span> challenges you to play. Do you accept?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" onclick="battleAnswer(true ,  'challengerName' )" class="btn btn-success" data-dismiss="modal">Accept</button>
+                <button type="button" onclick="battleAnswer(false , 'challengerName')" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--canceled Modal -->
+<div id="canceledModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Enemy cancelled his invitation</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--declined Modal -->
+<div id="declinedModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Enemy declined the challenge</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 
@@ -67,13 +148,34 @@
                 $("#status-user-" + id).html("online");
                 $("#battle-btn-" + id).show();
                 chat.server.feedback(displayName, id);
-            }; 
+            };
             chat.client.logOutUser = function (id) {
                 $("#chat_user_" + id).prependTo($(".list"));
                 $("#status-icon-" + id).removeClass("online").addClass("offline");
                 $("#status-user-" + id).html("offline");
                 $("#battle-btn-" + id).hide();
             };
+            chat.client.acceptChallenge = function () {
+                console.debug("Fight begins")
+                $('#waitModal').modal('hide')
+                // to do redirect to fight
+            }
+
+            chat.client.declineChallenge = function () {
+                $('#waitModal').modal('hide')
+                $('#declinedModal').modal('show')
+            }
+
+            chat.client.informAboutCanceling = function () {
+                $('#challengeModal').modal('hide')
+                $('#canceledModal').modal('show')
+
+            }
+
+            chat.client.openChallengeDialog = function (challenger) {
+                $("#challengerName").html(challenger)
+                $('#challengeModal').modal('show')
+            }
 
             // Get the user name and store it to prepend to messages.
              var displayName = "@Model.CurrentUser"
@@ -89,6 +191,27 @@
                         $('#message').val('').focus();
                     }
                 });
+                challengeToFight = function (challengedUser) {
+                    $("#challengedUser").html(challengedUser);
+                    chat.server.challengeToBattle(challengedUser, "@Model.CurrentUser");
+                };
+
+                battleAnswer = function (decision, callerId) {
+                    destination = $("#" + callerId).html();
+                    console.debug(destination);
+                    chat.server.battleAnswer(decision, destination);
+                    if (decision) {
+                        console.debug("Fight begins")
+                        $('#challengeModal').modal('hide')
+                    }
+                };
+
+                cancelInvitation = function (callerId) {
+                    destination = $("#" + callerId).html();
+                    console.debug(destination);
+                    chat.server.cancelInvitation(destination);
+                };
+
             });
         });
         // This optional function html-encodes messages for display in the page.

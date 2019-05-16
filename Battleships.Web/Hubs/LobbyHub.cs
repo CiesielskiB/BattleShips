@@ -31,6 +31,18 @@ namespace Battleships.Web
 			return base.OnDisconnected(stopCalled);
 		}
 
+		public override Task OnReconnected()
+		{
+			string name = Context.User.Identity.Name;
+
+			if (!_connections.GetConnections(name).Contains(Context.ConnectionId))
+			{
+				_connections.Add(name, Context.ConnectionId);
+			}
+
+			return base.OnReconnected();
+		}
+
 		public void Send(string name, string message)
 		{
 			// Call the addNewMessageToPage method to update clients.

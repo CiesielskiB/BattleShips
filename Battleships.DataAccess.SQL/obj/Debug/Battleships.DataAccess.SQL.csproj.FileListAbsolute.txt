@@ -36,3 +36,4 @@ C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.DataAccess.SQL\obj
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.csproj.CopyComplete
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.dll
 C:\Users\Miket\Desktop\mvcBattleships\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.pdb
+C:\Users\Miket\Documents\bartek\source\repos\Battleships\Battleships.DataAccess.SQL\obj\Debug\Battleships.DataAccess.SQL.Migrations.OnlineBattleAdd.resources

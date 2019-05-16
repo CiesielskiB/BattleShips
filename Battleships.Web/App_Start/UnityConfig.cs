@@ -47,6 +47,7 @@ namespace Battleships.Web
             container.RegisterType<IRepository<PersonalOptions>, SQLRepository<PersonalOptions>>();
             container.RegisterType<IRepository<LeaderBoard>, SQLRepository<LeaderBoard>>();
             container.RegisterType<IRepository<GameHistory>, SQLRepository<GameHistory>>();
+            container.RegisterType<IRepository<OnlineBattle>, SQLRepository<OnlineBattle>>();
 		}
     }
 }

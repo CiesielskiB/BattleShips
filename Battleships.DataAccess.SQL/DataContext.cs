@@ -19,6 +19,7 @@ namespace Battleships.DataAccess.SQL
 		public DbSet<GameHistory> GameHistories { get; set; }
 		public DbSet<LeaderBoard> LeaderBoards { get; set; }
 		public DbSet<PersonalOptions> PersonalOptions { get; set; }
+		public DbSet<OnlineBattle> OnlineBattles { get; set; }
 
 	}
 }

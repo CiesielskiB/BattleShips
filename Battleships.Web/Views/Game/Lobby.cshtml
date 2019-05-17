@@ -153,10 +153,10 @@
                 $("#status-user-" + id).html("offline");
                 $("#battle-btn-" + id).hide();
             };
-            chat.client.acceptChallenge = function () {
+            chat.client.acceptChallenge = function (battleId) {
                 console.debug("Fight begins")
                 $('#waitModal').modal('hide')
-                // to do redirect to fight
+                redirect("/OnlineBattle/Index", "GET", { battleId: battleId});
             }
 
             chat.client.declineChallenge = function () {
@@ -197,10 +197,12 @@
                 battleAnswer = function (decision, callerId) {
                     destination = $("#" + callerId).html();
                     console.debug(destination);
-                    chat.server.battleAnswer(decision, destination);
                     if (decision) {
                         console.debug("Fight begins")
                         $('#challengeModal').modal('hide')
+                        redirect("/OnlineBattle/Create", "POST", { player1: "@Model.CurrentUser", player2: destination });
+                    } else {
+                        chat.server.decline(destination);
                     }
                 };
 
@@ -217,6 +219,14 @@
             var encodedValue = $('<div />').text(value).html();
             return encodedValue;
         }
+
+        var redirect = function (url, method, args) {
+            var form = '';
+            $.each(args, function (key, value) {
+                form += '<input type="hidden" name="' + key + '" value="' + value + '">';
+            });
+            $('<form action="' + url + '" method="' + method + '">' + form + '</form>').appendTo('body').submit();
+        };
     </script>
 }
 

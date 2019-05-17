@@ -16,12 +16,17 @@ namespace Battleships.Core.Models
 		public int GamePhase { get; set; }
 		public string Winner { get; set; }
 
+		public OnlineBattle()
+		{
+
+		}
+
 		public OnlineBattle(string player1, string player2)
 		{
 			Player1 = player1;
 			Player2 = player2;
-			Player1Board = new String('x', 100);
-			Player2Board = new String('x', 100);
+			Player1Board = null;
+			Player2Board = null;
 			GamePhase = 1; //1 - ship placing, 2 - shooting, 3 - gameover
 			Winner = null;
 		}

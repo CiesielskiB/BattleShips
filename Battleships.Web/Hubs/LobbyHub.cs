@@ -61,16 +61,9 @@ namespace Battleships.Web
 
 
 		// check how it works with other hub to provide fight information
-		public void BattleAnswer(bool decision, string reciever)
+		public void Decline(string reciever)
 		{
-			if (decision)
-			{
-				Clients.Group(reciever).AcceptChallenge();
-			}
-			else
-			{
 				Clients.Group(reciever).DeclineChallenge();
-			}
 		}
 
 		public void CancelInvitation(string reciever)

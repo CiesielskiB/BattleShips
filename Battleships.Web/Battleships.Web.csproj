@@ -328,12 +328,12 @@
     <Content Include="Views\Game\GameVsPlayer.cshtml" />
     <Content Include="Views\Game\Lobby.cshtml" />
     <Content Include="Views\Game\_UserList.cshtml" />
+    <Content Include="Views\OnlineBattle\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Pictures\" />
     <Folder Include="Scripts\Scripts_JS\" />
-    <Folder Include="Views\OnlineBattle\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
